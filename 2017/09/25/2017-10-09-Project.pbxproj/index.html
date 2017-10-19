@@ -1,0 +1,767 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="project.pbxproj 介绍project.pbxproj 文件被包含于 Xcode 工程文件 .xcodeproj 之中，存储着 Xcode 工程的各项配置参数。它本质上是一种旧风格的 Property List 文件，历史可追溯到 NeXT 的 OpenStep，其可读性不如 xml 和 json。Property List 在苹果家族的历史上存在三种格式：OpenStep，XML 和">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Mei Xia">
+<meta property="og:url" content="https://github.com/muhuashanjin/2017/09/25/2017-10-09-Project.pbxproj/index.html">
+<meta property="og:site_name" content="Mei Xia">
+<meta property="og:description" content="project.pbxproj 介绍project.pbxproj 文件被包含于 Xcode 工程文件 .xcodeproj 之中，存储着 Xcode 工程的各项配置参数。它本质上是一种旧风格的 Property List 文件，历史可追溯到 NeXT 的 OpenStep，其可读性不如 xml 和 json。Property List 在苹果家族的历史上存在三种格式：OpenStep，XML 和">
+<meta property="og:image" content="http://7xw5qd.com1.z0.glb.clouddn.com/project.pbxproj%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%9B%BE.png">
+<meta property="og:updated_time" content="2017-10-09T02:54:29.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Mei Xia">
+<meta name="twitter:description" content="project.pbxproj 介绍project.pbxproj 文件被包含于 Xcode 工程文件 .xcodeproj 之中，存储着 Xcode 工程的各项配置参数。它本质上是一种旧风格的 Property List 文件，历史可追溯到 NeXT 的 OpenStep，其可读性不如 xml 和 json。Property List 在苹果家族的历史上存在三种格式：OpenStep，XML 和">
+<meta name="twitter:image" content="http://7xw5qd.com1.z0.glb.clouddn.com/project.pbxproj%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%9B%BE.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: 'Author'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://github.com/muhuashanjin/2017/09/25/2017-10-09-Project.pbxproj/"/>
+
+
+
+
+
+  <title> | Mei Xia</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Mei Xia</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            Startseite
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            Archiv
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://github.com/muhuashanjin/2017/09/25/2017-10-09-Project.pbxproj/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mei Xia">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Mei Xia">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline"></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">Veröffentlicht am</span>
+              
+              <time title="Post created" itemprop="dateCreated datePublished" datetime="2017-09-25T09:59:30+08:00">
+                2017-09-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h1 id="project-pbxproj"><a href="#project-pbxproj" class="headerlink" title="project.pbxproj"></a>project.pbxproj</h1><ul>
+<li><h3 id="介绍"><a href="#介绍" class="headerlink" title="介绍"></a>介绍</h3><p><code>project.pbxproj</code> 文件被包含于 Xcode 工程文件 <em>.xcodeproj 之中，存储着 Xcode 工程的各项配置参数。它本质上是一种旧风格的 Property List 文件，历史可追溯到 NeXT 的 OpenStep，其可读性不如 xml 和 json。Property List 在苹果家族的历史上存在三种格式：OpenStep，XML 和 Binary，<em>*除了 OpenStep 被废弃不支持写入以外，其余格式都提供 API 支持读写。</em></em>该文件以明确的编码信息开头，通常是UTF-8。这意味着该文件在其开始时不能承载BOM（Byte Ordering Mark：即字节顺序标记，它是插入到以UTF-8、UTF16或UTF-32编码Unicode文件开头的特殊标记，用来识别Unicode文件的编码类型。对于UTF-8来说，BOM并不是必须的，因为BOM用来标记多字节编码文件的编码类型和字节顺序（big-endian或little-endian），否则解析将失败。与 json 最明显的差别是：数组用小括号括起来并用逗号隔开元素；字典用大括号括起来并用分号隔开键值对，键值之间用等号连接；二进制数据用尖括号 <code>&lt;&gt;</code> 括起来：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">数组：</div><div class="line">project.pbxproj =&gt; ( &quot;1&quot;, &quot;2&quot;, &quot;3&quot; )</div><div class="line">json =&gt; [ &quot;1&quot;, &quot;2&quot;, &quot;3&quot; ]</div><div class="line"></div><div class="line">字典：</div><div class="line">project.pbxproj =&gt; &#123; &quot;key&quot; = &quot;value&quot;; ... &#125;</div><div class="line">json =&gt; &#123; &quot;key&quot; : &quot;value&quot;, ... &#125;</div></pre></td></tr></table></figure>
+<p>对 Xcode 工程进行添加、删除文件或者配置编译参数等，实际上都是对 <code>project.pbxproj</code>文件的修改。使用 <code>git diff</code> 查看所做文件的修改，会发现<strong>唯一被修改的就是这个 project.pbxproj 文件</strong>，其他的文件并没有被修改。</p>
+</li>
+<li><h3 id="解析文件格式"><a href="#解析文件格式" class="headerlink" title="解析文件格式"></a>解析文件格式</h3><p><img src="http://7xw5qd.com1.z0.glb.clouddn.com/project.pbxproj%E6%96%87%E4%BB%B6%E7%BB%93%E6%9E%84%E5%9B%BE.png" alt=""></p>
+<p>根元素总共有 5 个键值对，Key 分为：<code>archiveVersion</code>，<code>classes</code>，<code>objectVersion</code>，<code>objects</code> 和 <code>rootObject</code>。上图中所有的配置对象都在 <code>objects</code>  中，对象的Key 都为 UUID，对应的 Value 可当做是一个字典。</p>
+<p>这里的 key 是 UUID 作为交叉引用的索引，保证每个配置信息对象的唯一性。因为 UUID 根据主机Mac地址或(伪)随机数等加上时间戳生成（ps:<a href="https://tools.ietf.org/html/rfc4122.html" target="_blank" rel="external">UUID生成规则</a>），避免了多人在同一时间段操作修改工程文件带来的问题。也就是说工程中每项配置对象都有个唯一的 UUID，然后其他配置对象想引用某个配置对象直接使用它的 UUID 即可。这就跟我们编程时使用指针指向某个对象的地址一样，其他对象的属性想引用它，只需要给属性传个指针地址就行了。</p>
+<p>文件的引用由 PBXBuildFile 中属性 fileRef 指向 PBXFileReference，它有一个path属性标明文件路径，但需要注意的是这里的 path 显示的路径可能不是项目目录下的全路径，只是显示文件名，要得到文件全路径，需要使用 PBXFileReference 的 UUID 索引到 PBXGroup、PBXReferenceProxy等中一层层递归向上搜索路径来拼接成全路径。</p>
+<p><code>objects</code> 的键值对根据内容类型被分成了若干个 section，采用注释的方式分节也使得可读性更强。section 的数量跟工程有关，尤其是每个工程的 BuildPhase 和 Target 差别都很大，section 列表就是上图中<code>objects</code>后的分支结构，显示在 Xcode 中能看见所有的公共配置信息都存在于 project.pbxproj 中。主要包含跟文件相关的 BuildFile，Group 和 FileReference，跟编译相关的 BuildPhase 和 Build Configuration（List），以及一些列 Target 和 TargetDependency等。</p>
+<p>着重介绍几个属性：</p>
+<ul>
+<li><h4 id="PBXProject"><a href="#PBXProject" class="headerlink" title="PBXProject"></a>PBXProject</h4><p><code>PBXProject</code>标识着整个工程,由根元素的<code>rootObject</code>引入。</p>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><h4 id="PBXBuildFile"><a href="#PBXBuildFile" class="headerlink" title="PBXBuildFile"></a>PBXBuildFile</h4><p><code>PBXBuildFile</code>是文件类，被<code>PBXBuildPhase</code>等作为文件包含或被引用的资源。</p>
+</li>
+<li><h4 id="PBXFileReference"><a href="#PBXFileReference" class="headerlink" title="PBXFileReference"></a>PBXFileReference</h4><p><code>PBXFileReference</code>用于跟踪项目引用的每一个外部文件，比如源代码文件、资源文件、库文件、生成目标文件等。</p>
+</li>
+<li><h4 id="PBXGroup"><a href="#PBXGroup" class="headerlink" title="PBXGroup"></a>PBXGroup</h4><p><code>PBXGroup</code>用于组文件，或者嵌套组， 是 Xcode 中用来组织文件的一种方式，<strong>它对文件系统没有任何影响</strong>，无论你创建或者删除一个 Group，都不会导致 folder 的增加或者移除。 当然如果在你删除时选择 Move to Trash 就是另外一说了。</p>
+<p>在 Group 中的文件的关系, 不会与 folder 中的有什么冲突， 它只是 Xcode 为你提供的一种分离关注的方式。Group 之间的关系， 也是在 <code>project.pbxproj</code> 中定义的，这个文件中包含了 Xcode 工程中所有 File 和 Group 的关系。</p>
+<p>Group 在我们的工程中就是黄色的文件夹，而 Folder 是蓝色的文件夹(一般在 Xcode 工程中, 我们不会使用 Folder)。</p>
+</li>
+<li><h4 id="PBXNativeTarget"><a href="#PBXNativeTarget" class="headerlink" title="PBXNativeTarget"></a>PBXNativeTarget</h4><p><code>PBXNativeTarget</code>就是工程中的<a href="https://developer.apple.com/library/ios/featuredarticles/XcodeConcepts/Concept-Targets.html" target="_blank" rel="external">Target</a> ，它指定了一个用于产品(product), 并且包含了从工程中的一些文件中构建产品的命令。这些命令使用构建设置(build settings)和构建阶段(build phases)的方式来组织, 可以在 Xcode 编辑器中改变这些设置。如果工程中有多个target，都会在这个section中有所体现。</p>
+</li>
+<li><h4 id="PBXSourcesBuildPhase"><a href="#PBXSourcesBuildPhase" class="headerlink" title="PBXSourcesBuildPhase"></a>PBXSourcesBuildPhase</h4><p><code>PBXSourcesBuildPhase</code>用于构建阶段中编译源文件。</p>
+</li>
+</ul>
+<ul>
+<li><h4 id="PBXResourcesBuildPhase"><a href="#PBXResourcesBuildPhase" class="headerlink" title="PBXResourcesBuildPhase"></a>PBXResourcesBuildPhase</h4><p><code>PBXResourcesBuildPhase</code>用于构建阶段需要复制的资源文件。</p>
+<p>文件格式具体分析详见 <a href="http://www.monobjc.net/xcode-project-file-format.html" target="_blank" rel="external">Xcode Project File Format</a>。</p>
+</li>
+<li><h3 id="操作-Property-List-的途径"><a href="#操作-Property-List-的途径" class="headerlink" title="操作 Property List 的途径"></a>操作 Property List 的途径</h3><p>plutil命令提供处理 Property list 文件的能力，将Property list 文件转成 XML 格式命令如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ plutil -convert xml1 -s -r -o project.pbxproj.xml project.pbxproj</div></pre></td></tr></table></figure>
+<p>在 Cocoa 的 <code>NSPropertyListSerialization</code> 也提供了类似的功能，更面向对象，其实 <code>plutil</code> 和 <code>NSPropertyListSerialization</code> 底层都是调用 <code>CoreFoundation</code> 的<code>CFPropertyList</code> 相关的 API，所以功能类似。</p>
+<p>但两者在读入 project.pbxproj 文件时，字典中键值对的顺序会跟文件中原始的顺序不一致。这是因为字典为了实现快速查找会将 key 按序存储（比如字典序或用红黑树排序）。</p>
+<p>大多数操作 project.pbxproj 文件工具的原理，也就是利用 <code>plutil</code> 转成 json 或 xml 后进行处理。</p>
+</li>
+<li><h3 id="操作-project-pbxproj-文件"><a href="#操作-project-pbxproj-文件" class="headerlink" title="操作 project.pbxproj 文件"></a>操作 project.pbxproj 文件</h3><p><a href="https://github.com/CocoaPods/Xcodeproj">Xcodeproj</a> 是一个使用 Ruby 来创建和修改 Xcode 工程文件的工具.  属于Cocoapods的一个组件，Cocoapods 就是利用Xcodeproj组件，脚本化的管理任务和构造友好的Xcode库，它同时支持<code>Xcode workspaces (.xcworkspace)</code>、<code>configuration files (.xcconfig)</code>和<code>Xcode Scheme files (.xcscheme)</code>。</p>
+<ul>
+<li><h4 id="安装"><a href="#安装" class="headerlink" title="安装"></a>安装</h4><p>Xcodeproj 通过 RubyGems 安装，命令如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ [sudo] gem install xcodeproj</div></pre></td></tr></table></figure>
+</li>
+<li><h4 id="源码分析"><a href="#源码分析" class="headerlink" title="源码分析"></a>源码分析</h4><p><a href="http://www.rubydoc.info/gems/xcodeproj" target="_blank" rel="external">API文档地址</a>，这里解析一下 Xcodeproj module 下 几个重要的类：</p>
+<ul>
+<li><p>Project</p>
+<p>Xcodeproj 组件用这个 class 来抽象 Xcode project 文件，可用这个类来操作已存在的Xcode project 文件，甚至可以创建一个Xcode project 文件。调用 Project 的 API 返回 AbstractObject 的实例，这个 AbstractObject 的类就是用来包装 project.pbxproj 中的 objects，以此来描述 Xcode project 文件，进行操作。</p>
+</li>
+<li><p>Object</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div></pre></td><td class="code"><pre><div class="line">Object</div><div class="line"> ├── AbstractObject    </div><div class="line"> │   ├── AbstractBuildPhase   </div><div class="line"> │       ├── PBXCopyFilesBuildPhase</div><div class="line"> │       ├── PBXFrameworksBuildPhase</div><div class="line"> │       ├── PBXHeadersBuildPhase</div><div class="line"> │       ├── PBXResourcesBuildPhase                           </div><div class="line"> │       ├── PBXRezBuildPhase</div><div class="line"> │       ├── PBXShellScriptBuildPhase                              </div><div class="line"> │       └── PBXSourcesBuildPhase</div><div class="line"> │   ├── AbstractTarget   </div><div class="line"> │       ├── PBXAggregateTarget</div><div class="line"> │       ├── PBXLegacyTarget                           </div><div class="line"> │       └── PBXNativeTarget</div><div class="line"> │   ├── AbstractObjectAttribute                                                           </div><div class="line"> │   ├── PBXBuildFile                                                           </div><div class="line"> │   ├── PBXBuildRule      </div><div class="line"> │   ├── PBXContainerItemProxy                                                           </div><div class="line"> │   ├── PBXFileReference </div><div class="line"> │   ├── PBXGroup    </div><div class="line"> │       ├── PBXVariantGroup</div><div class="line"> │       └── XCVersionGroup</div><div class="line"> │   ├── PBXProject                                                           </div><div class="line"> │   ├── PBXReferenceProxy                                                           </div><div class="line"> │   ├── PBXTargetDependency                                                           </div><div class="line"> │   ├── XCBuildConfiguration                                                           </div><div class="line"> │   └── XCConfigurationList</div></pre></td></tr></table></figure>
+<p>上面就是Object module 中类的结构图，用 Object module 来抽象文件中的属性，其中的类名和 project.pbxproj 文件中属性名一样，不同在于添加了一些抽象类来管理相同类型的属性，这样设计使得操作属性非常方便，直接操作这些属性类就行。</p>
+</li>
+<li><p>UUIDGenerator</p>
+<p>在源工程 uuid_generator.rb 的文件中，类UUIDGenerator就是用来生成UUID，但与系统生成UUID不同的是，UUIDGenerator 利用文件路径，然后MD5之后来作为UUID。其中在方法 generate_paths 可以看出拼接文件路径的逻辑，有路径的属性就直接利用 path ，没有路径的就根据属性类型按照一定规则拼接路径，然后在方法uuid_for_path中MD5一下路径。</p>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><h4 id="实践"><a href="#实践" class="headerlink" title="实践"></a>实践</h4><ul>
+<li><p>创建 Xcodeproj 工程文件，并保存（这里需要注意的是不管是这里的创建工程，还是对工程的修改最后一定要使用save保存，才会执行对文件的工程的修改）</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># def new(klass)</div><div class="line">Xcodeproj::Project.new(&quot;./JCTest.xcodeproj&quot;).save</div></pre></td></tr></table></figure>
+</li>
+<li><p>打开 Xcodeproj 文件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># def self.open(path)</div><div class="line">project=Xcodeproj::Project.open(&quot;./JCTest.xcodeproj&quot;)</div></pre></td></tr></table></figure>
+</li>
+<li><p>创建 Group 分组，名称为 JCTestGroup，对应的路径为./JCTestGroup</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"># def new_group(name, path = nil, source_tree = :group)</div><div class="line">  @param source_tree : SOURCE_TREES_BY_KEY = &#123;</div><div class="line">                          :absolute        =&gt; &apos;&lt;absolute&gt;&apos;,</div><div class="line">                          :group           =&gt; &apos;&lt;group&gt;&apos;,</div><div class="line">                          :project         =&gt; &apos;SOURCE_ROOT&apos;,</div><div class="line">                          :built_products  =&gt; &apos;BUILT_PRODUCTS_DIR&apos;,</div><div class="line">                          :developer_dir   =&gt; &apos;DEVELOPER_DIR&apos;,</div><div class="line">                          :sdk_root        =&gt; &apos;SDKROOT&apos;,</div><div class="line">                       &#125;</div><div class="line">                       </div><div class="line">JCTestGroup=proj.main_group.new_group(&quot;JCTest&quot;,&quot;./JCTest&quot;)</div></pre></td></tr></table></figure>
+</li>
+<li><p>Group 分组添加文件引用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line"># def new_reference(path, source_tree = :group)</div><div class="line">ref=JCTestGroup.new_reference(&quot;JCTest.m&quot;)</div></pre></td></tr></table></figure>
+</li>
+<li><p>创建 Target </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line"># def new_target(type, name, platform, deployment_target = nil, product_group = nil, language = nil)</div><div class="line">  @param [Symbol] type : &quot;:application&quot;,&quot;:framework&quot;,&quot;:dynamic_library&quot;,    </div><div class="line">  &quot;:static_library&quot;</div><div class="line">  @param [String] name : the name of the target product</div><div class="line">  @param [Symbol] platform : &quot;:ios&quot; or &quot;:osx&quot;</div><div class="line">  @param [String] deployment_target : the deployment target for the platform</div><div class="line">  @param  [PBXGroup] product_group : the product group, where to add to a file </div><div class="line">  reference of the created target.</div><div class="line">  @param [Symbol] language : &quot;:objc&quot; or &quot;:swift&quot;</div><div class="line">  @return [PBXNativeTarget] the target.</div><div class="line">  </div><div class="line">target = project.new_target(:application,&quot;JCTest&quot;,:ios)</div></pre></td></tr></table></figure>
+<p>下面是 new_target 方法的内部实现，可以看到初始化 Target、Product、Build phases、Frameworks，那么如果需要对 Xcodeproj 工程文件进行修改，就可以直接操作这些对象得到想到的配置：  </p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div></pre></td><td class="code"><pre><div class="line">def self.new_target(project, type, name, platform, deployment_target, </div><div class="line">product_group, language)</div><div class="line"></div><div class="line">        # ----------------- Target -------------------</div><div class="line">        # 新建 target 加入到 project.targets 中</div><div class="line">        target = project.new(PBXNativeTarget)</div><div class="line">        project.targets &lt;&lt; target</div><div class="line">      </div><div class="line">        target.name = name</div><div class="line">        target.product_name = name</div><div class="line">              </div><div class="line">        /* 设置 product_type 类型 ，使用 Constants 中的 PRODUCT_TYPE_UTI 获取：</div><div class="line">          PRODUCT_TYPE_UTI = &#123;</div><div class="line">            :application          =&gt; &apos;com.apple.product-type.application&apos;,</div><div class="line">            :framework            =&gt; &apos;com.apple.product-type.framework&apos;,</div><div class="line">            :dynamic_library      =&gt; &apos;com.apple.product-type.library.dynamic&apos;,</div><div class="line">            :static_library       =&gt; &apos;com.apple.product-type.library.static&apos;,</div><div class="line">            :bundle               =&gt; &apos;com.apple.product-type.bundle&apos;,</div><div class="line">            :octest_bundle        =&gt; &apos;com.apple.product-type.bundle&apos;,</div><div class="line">            :unit_test_bundle     =&gt; &apos;com.apple.product-type.bundle.unit-test&apos;,</div><div class="line">            :ui_test_bundle       =&gt; &apos;com.apple.product-type.bundle.ui-testing&apos;,</div><div class="line">            :app_extension        =&gt; &apos;com.apple.product-type.app-extension&apos;,</div><div class="line">            :command_line_tool    =&gt; &apos;com.apple.product-type.tool&apos;,</div><div class="line">            :watch_app            =&gt; &apos;com.apple.product-type.application.watchapp&apos;,</div><div class="line">            :watch2_app           =&gt; &apos;com.apple.product-type.application.watchapp2&apos;,</div><div class="line">            :watch_extension      =&gt; &apos;com.apple.product-type.watchkit-extension&apos;,</div><div class="line">            :watch2_extension     =&gt; &apos;com.apple.product-type.watchkit2-extension&apos;,</div><div class="line">            :tv_extension         =&gt; &apos;com.apple.product-type.tv-app-extension&apos;,</div><div class="line">            :messages_application =&gt; &apos;com.apple.product-type.application.messages&apos;,</div><div class="line">            :messages_extension   =&gt; &apos;com.apple.product-type.app-extension.messages&apos;,</div><div class="line">            :sticker_pack         =&gt; &apos;com.apple.product-type.app-extension.messages-</div><div class="line">            sticker-pack&apos;,</div><div class="line">            :xpc_service          =&gt; &apos;com.apple.product-type.xpc-service&apos;,</div><div class="line">          &#125;.freeze</div><div class="line">          */</div><div class="line">        target.product_type = Constants::PRODUCT_TYPE_UTI[type]</div><div class="line">           </div><div class="line">        # target 配置信息</div><div class="line">        target.build_configuration_list = configuration_list(project, platform,</div><div class="line">        deployment_target, type, language)</div><div class="line">      </div><div class="line">        # ----------------- Product -------------------</div><div class="line">        product = product_group.new_product_ref_for_target(name, type)</div><div class="line">        target.product_reference = product</div><div class="line">      </div><div class="line">        # ----------------- Build phases -------------------</div><div class="line">        target.build_phases &lt;&lt; project.new(PBXSourcesBuildPhase)</div><div class="line">        target.build_phases &lt;&lt; project.new(PBXFrameworksBuildPhase)</div><div class="line">      </div><div class="line">        # ----------------- Frameworks -------------------</div><div class="line">        framework_name = (platform == :osx) ? &apos;Cocoa&apos; : &apos;Foundation&apos;</div><div class="line">        target.add_system_framework(framework_name)</div><div class="line">      </div><div class="line">        target</div><div class="line">      end</div></pre></td></tr></table></figure>
+</li>
+<li><p>target 的配置信息 build_configuration_list，其实在创建 Target 的 new_target 方法中已经使用 configuration_list 方法初始化 build_configuration_list 配置信息，使用 set_setting 可以修改 buildSettings 的配置，这里的 key 与 buildSettings 的 key 是一致的：</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line"># def set_setting(key, value)</div><div class="line">target.build_configuration_list.set_setting(&apos;INFOPLIST_FILE&apos;, </div><div class="line">&quot;$(SRCROOT)/JCTest/Info.plist&quot;)</div></pre></td></tr></table></figure>
+<p>  看一下 configuration_list 内部实现，可以看出为 section XCBuildConfiguration 初始化 project.targets 中所有的 target 的 Release 和 Debug 的 buildSettings，使用 common_build_settings 方法设置在当前 platform 和 configuration 下的 buildSettings：</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"># def self.configuration_list(project, platform = nil, deployment_target = nil, target_product_type = nil, language = nil)</div><div class="line"></div><div class="line">    cl = project.new(XCConfigurationList)</div><div class="line">    cl.default_configuration_is_visible = &apos;0&apos;</div><div class="line">    cl.default_configuration_name = &apos;Release&apos;</div><div class="line"></div><div class="line">    release_conf = project.new(XCBuildConfiguration)</div><div class="line">    release_conf.name = &apos;Release&apos;</div><div class="line">    release_conf.build_settings = common_build_settings(:release, platform, </div><div class="line">    deployment_target, target_product_type, language)</div><div class="line"></div><div class="line">    debug_conf = project.new(XCBuildConfiguration)</div><div class="line">    debug_conf.name = &apos;Debug&apos;</div><div class="line">    debug_conf.build_settings = common_build_settings(:debug, platform,</div><div class="line">    deployment_target, target_product_type, language)</div><div class="line"></div><div class="line">    cl.build_configurations &lt;&lt; release_conf</div><div class="line">    cl.build_configurations &lt;&lt; debug_conf</div><div class="line"></div><div class="line">    project.build_configurations.each do |configuration|</div><div class="line">      next if cl.build_configurations.map(&amp;:name).include?(configuration.name)</div><div class="line"></div><div class="line">      new_config = project.new(XCBuildConfiguration)</div><div class="line">      new_config.name = configuration.name</div><div class="line">      new_config.build_settings = common_build_settings(configuration.type,</div><div class="line">      platform, deployment_target, target_product_type, language)</div><div class="line">      cl.build_configurations &lt;&lt; new_config</div><div class="line">    end</div><div class="line"></div><div class="line">    cl</div><div class="line">end</div></pre></td></tr></table></figure>
+</li>
+<li><p>target添加相关的文件引用，这样编译的时候才能引用到：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line"># def add_file_references(file_references, compiler_flags = &#123;&#125;)</div><div class="line">  @param  [Array&lt;PBXFileReference&gt;] file_references : the files references of</div><div class="line">          the source files that should be added to the target.</div><div class="line">  @param  [String] compiler_flags : the compiler flags for the source </div><div class="line">          files</div><div class="line">target.add_file_references([ref],&apos;-fno-objc-arc&apos;)</div></pre></td></tr></table></figure>
+</li>
+<li><p>save 保存，对 project 的修改，只有调用 save 之后才会执行</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">project.save</div></pre></td></tr></table></figure>
+</li>
+<li><p>以下是利用 Xcodeproj 组件创建一个 Xcodeproj 工程的完整代码，但需要注意的是 Xcodeproj 创建的只是工程的各种配置以及文件的索引，但实体文件需要自己组织好工程目录，与填写在 Xcodeproj 组件的路径一致</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div></pre></td><td class="code"><pre><div class="line">require &apos;xcodeproj&apos;</div><div class="line"></div><div class="line">#创建 JCTest.xcodeproj工程文件，并保存</div><div class="line">Xcodeproj::Project.new(&quot;./JCTest.xcodeproj&quot;).save</div><div class="line"></div><div class="line">#打开创建的JCTest.xcodeproj文件</div><div class="line">proj=Xcodeproj::Project.open(&quot;./JCTest.xcodeproj&quot;)</div><div class="line"></div><div class="line">#创建一个分组，名称为JCTest，对应的路径为./JCTest</div><div class="line">JCTestGroup=proj.main_group.new_group(&quot;JCTest&quot;,&quot;./JCTest&quot;)</div><div class="line"></div><div class="line">#给JCTest分组添加文件引用</div><div class="line">JCTestGroup.new_reference(&quot;AppDelegate.h&quot;)</div><div class="line">ref1=JCTestGroup.new_reference(&quot;AppDelegate.m&quot;)</div><div class="line">ref2=JCTestGroup.new_reference(&quot;Assets.xcassets&quot;)</div><div class="line">JCTestGroup.new_reference(&quot;Base.lproj/LaunchScreen.storyboard&quot;)</div><div class="line">JCTestGroup.new_reference(&quot;Base.lproj/Main.storyboard&quot;)</div><div class="line"></div><div class="line">JCTestGroup.new_reference(&quot;ViewController.h&quot;)</div><div class="line">ref4=JCTestGroup.new_reference(&quot;ViewController.m&quot;)</div><div class="line"></div><div class="line">#在JCTest分组下创建一个名字为Supporting Files的子分组，并给该子分组添加main和info.plist文件引用</div><div class="line">supportingGroup=JCTestGroup.new_group(&quot;Supporting Files&quot;)</div><div class="line">ref3=supportingGroup.new_reference(&quot;main.m&quot;)</div><div class="line">supportingGroup.new_reference(&quot;Info.plist&quot;)</div><div class="line"></div><div class="line">#创建target，主要的参数 type: application :dynamic_library framework :static_library 意思大家都懂的</div><div class="line">#name：target名称</div><div class="line">#platform：平台 :ios或者:osx</div><div class="line">target = proj.new_target(:application,&quot;JCTest&quot;,:ios)</div><div class="line"></div><div class="line">#添加target配置信息</div><div class="line">target.build_configuration_list.set_setting(&apos;INFOPLIST_FILE&apos;, &quot;$(SRCROOT)/JCTest/Info.plist&quot;)</div><div class="line"></div><div class="line">#target添加相关的文件引用，这样编译的时候才能引用到</div><div class="line">target.add_file_references([ref1,ref2,ref3,ref4])</div><div class="line"></div><div class="line">testGroup=proj.main_group.new_group(&quot;JCTestTests&quot;,&quot;./JCTestTests&quot;)</div><div class="line">ref4=testGroup.new_reference(&quot;JCTestTests.m&quot;)</div><div class="line">supportingGroup=testGroup.new_group(&quot;Supporting Files&quot;)</div><div class="line">supportingGroup.new_reference(&quot;Info.plist&quot;)</div><div class="line"></div><div class="line">#创建test target</div><div class="line">testTarget = proj.new_target(:unit_test_bundle,&quot;JCTestTests&quot;,:ios,nil,proj.products_group)</div><div class="line">testRefrence = testTarget.product_reference</div><div class="line">testRefrence.set_explicit_file_type(&apos;wrapper.cfbundle&apos;)</div><div class="line">testRefrence.name = &quot;JCTestTests.xctest&quot;</div><div class="line">testTarget.add_file_references([ref4])</div><div class="line"></div><div class="line">#保存</div><div class="line">proj.save</div></pre></td></tr></table></figure>
+<p>​</p>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a href="http://www.cocoachina.com/ios/20161008/17689.html" target="_blank" rel="external">通过Xcodeproj深入探究Xcode工程文件 一</a></p>
+<p><a href="http://www.tomorjm.com/2016/10/06/通过Xcodeproj深入探究Xcode工程文件%20二/" target="_blank" rel="external">通过Xcodeproj深入探究Xcode工程文件 二</a></p>
+<p><a href="http://draveness.me/bei-xcodeproj-keng-de-zhe-ji-tian.html" target="_blank" rel="external">使用代码为 Xcode 工程添加文件</a></p>
+<p><a href="http://www.jianshu.com/p/dfb433447b61" target="_blank" rel="external">使用xcodeproj为工程添加framework</a></p>
+<p><a href="http://blog.wtlucky.com/blog/2016/10/10/use-script-to-modify-xcode-project/" target="_blank" rel="external">懒人福利：用脚本来修改Xcode工程</a></p>
+<p><a href="http://yulingtianxia.com/blog/2016/09/28/Let-s-Talk-About-project-pbxproj/" target="_blank" rel="external">Let’s Talk About project.pbxproj</a></p>
+<p><a href="http://yulingtianxia.com/blog/2016/11/28/pbxprojHelper/" target="_blank" rel="external">pbxprojHelper–Xcode工程文件助手</a></p>
+<p><a href="http://www.rubydoc.info/search/gems/xcodeproj?q=PBXNativeTarget" target="_blank" rel="external">Xcodeproj API</a></p>
+<p><a href="http://www.monobjc.net/xcode-project-file-format.html" target="_blank" rel="external">Xcode Project File Format</a></p>
+</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2017/09/22/2017-09-25-Pod/" rel="next" title="">
+                <i class="fa fa-chevron-left"></i> 
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            Inhaltsverzeichnis
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            Übersicht
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Mei Xia</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">Artikel</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#project-pbxproj"><span class="nav-number">1.</span> <span class="nav-text">project.pbxproj</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#介绍"><span class="nav-number">1.0.1.</span> <span class="nav-text">介绍</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#解析文件格式"><span class="nav-number">1.0.2.</span> <span class="nav-text">解析文件格式</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#PBXProject"><span class="nav-number">1.0.2.1.</span> <span class="nav-text">PBXProject</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#PBXBuildFile"><span class="nav-number">1.0.2.2.</span> <span class="nav-text">PBXBuildFile</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#PBXFileReference"><span class="nav-number">1.0.2.3.</span> <span class="nav-text">PBXFileReference</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#PBXGroup"><span class="nav-number">1.0.2.4.</span> <span class="nav-text">PBXGroup</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#PBXNativeTarget"><span class="nav-number">1.0.2.5.</span> <span class="nav-text">PBXNativeTarget</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#PBXSourcesBuildPhase"><span class="nav-number">1.0.2.6.</span> <span class="nav-text">PBXSourcesBuildPhase</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#PBXResourcesBuildPhase"><span class="nav-number">1.0.2.7.</span> <span class="nav-text">PBXResourcesBuildPhase</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#操作-Property-List-的途径"><span class="nav-number">1.0.3.</span> <span class="nav-text">操作 Property List 的途径</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#操作-project-pbxproj-文件"><span class="nav-number">1.0.4.</span> <span class="nav-text">操作 project.pbxproj 文件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#安装"><span class="nav-number">1.0.4.1.</span> <span class="nav-text">安装</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#源码分析"><span class="nav-number">1.0.4.2.</span> <span class="nav-text">源码分析</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#实践"><span class="nav-number">1.0.4.3.</span> <span class="nav-text">实践</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考"><span class="nav-number">1.0.5.</span> <span class="nav-text">参考</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Mei Xia</span>
+
+  
+</div>
+
+
+  <div class="powered-by">Erstellt mit  <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a></div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">Theme &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
