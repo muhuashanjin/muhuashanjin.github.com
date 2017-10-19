@@ -1,0 +1,715 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="1、创建私有Spec RepoSpec Repo是什么？它是所有的Pods的一个索引，就是一个容器，所有公开的Pods都在这个里面，它实际是一个Git仓库remote端在GitHub上，所以想要创建pod私有库，需要创建类似于master的私有Spec Repo，先在远程仓库创建一个工程JCLiveIOSSpecs，然后执行创建私有Spec Repo命令： 12#pod repo add [Pri">
+<meta property="og:type" content="article">
+<meta property="og:title" content="SQLCipher 私有Pod私有库">
+<meta property="og:url" content="https://github.com/muhuashanjin/2016/09/25/2017-09-25-Pod/index.html">
+<meta property="og:site_name" content="The Blog Of Mei Xia">
+<meta property="og:description" content="1、创建私有Spec RepoSpec Repo是什么？它是所有的Pods的一个索引，就是一个容器，所有公开的Pods都在这个里面，它实际是一个Git仓库remote端在GitHub上，所以想要创建pod私有库，需要创建类似于master的私有Spec Repo，先在远程仓库创建一个工程JCLiveIOSSpecs，然后执行创建私有Spec Repo命令： 12#pod repo add [Pri">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2017-10-19T12:08:27.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="SQLCipher 私有Pod私有库">
+<meta name="twitter:description" content="1、创建私有Spec RepoSpec Repo是什么？它是所有的Pods的一个索引，就是一个容器，所有公开的Pods都在这个里面，它实际是一个Git仓库remote端在GitHub上，所以想要创建pod私有库，需要创建类似于master的私有Spec Repo，先在远程仓库创建一个工程JCLiveIOSSpecs，然后执行创建私有Spec Repo命令： 12#pod repo add [Pri">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://github.com/muhuashanjin/2016/09/25/2017-09-25-Pod/"/>
+
+
+
+
+
+  <title>SQLCipher 私有Pod私有库 | The Blog Of Mei Xia</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">The Blog Of Mei Xia</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://github.com/muhuashanjin/2016/09/25/2017-09-25-Pod/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mei Xia">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="The Blog Of Mei Xia">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">SQLCipher 私有Pod私有库</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2016-09-25T00:00:00+08:00">
+                2016-09-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="1、创建私有Spec-Repo"><a href="#1、创建私有Spec-Repo" class="headerlink" title="1、创建私有Spec Repo"></a>1、创建私有Spec Repo</h3><p>Spec Repo是什么？它是所有的Pods的一个索引，就是一个容器，所有公开的Pods都在这个里面，它实际是一个Git仓库remote端在GitHub上，所以想要创建pod私有库，需要创建类似于master的私有Spec Repo，先在远程仓库创建一个工程JCLiveIOSSpecs，然后执行创建私有Spec Repo命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">#pod repo add [Private Repo Name][GitHub HTTPS clone URL]</div><div class="line">$ pod repo add JCLiveIOSSpecs http://git.jc/elephant-ios-component/JCLiveIOSSpecs.git</div></pre></td></tr></table></figure>
+<p>完成之后，进入到~/.cocoapods/repos目录下就可以看到JCLiveIOSSpecs这个目录了。</p>
+<h3 id="2、创建Pod项目工程文件"><a href="#2、创建Pod项目工程文件" class="headerlink" title="2、创建Pod项目工程文件"></a>2、创建Pod项目工程文件</h3><p>从零开始创建一个组件库，可以使用Cocoapods提供的工具<a href="http://guides.cocoapods.org/making/using-pod-lib-create" target="_blank" rel="external">Using Pod Lib Create</a> ，先cd到要创建项目的目录然后执行<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ pod lib create YXPlayerSDK</div></pre></td></tr></table></figure></p>
+<p>然后显示四个问题，1.是否需要一个例子工程；2.选择一个测试框架；3.是否基于View测试；4.类的前缀；4个问题的具体介绍可以去看官方文档。回答完4个问题他会自动执行pod install命令创建项目并生成依赖，项目结构如下：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div></pre></td><td class="code"><pre><div class="line">YXPlayerSDK</div><div class="line">├── Example                               #demo APP</div><div class="line">│   ├── YXPlayerSDK</div><div class="line">│   ├── YXPlayerSDK.xcodeproj</div><div class="line">│   ├── YXPlayerSDK.xcworkspace</div><div class="line">│   ├── Podfile                           #demo APP 的依赖描述文件</div><div class="line">│   ├── Podfile.lock</div><div class="line">│   ├── Pods                              #demo APP 的依赖文件</div><div class="line">│   └── Tests</div><div class="line">├── LICENSE                               #开源协议 默认MIT</div><div class="line">├── Pod                                   #组件的目录</div><div class="line">│   ├── Assets                            #资源文件</div><div class="line">│   └── Classes                           #类文件</div><div class="line">├── YXPlayerSDK.podspec                   #第三步要创建的podspec文件</div><div class="line">└── README.md                             #markdown格式的README</div></pre></td></tr></table></figure></p>
+<h3 id="3、创建私有库pod组件"><a href="#3、创建私有库pod组件" class="headerlink" title="3、创建私有库pod组件"></a>3、创建私有库pod组件</h3><p>所需要做的工作就是在相应的 Pods/Developemnt Pods/ 组件 /Classes 下编码，就是向Development Pods文件夹中添加库文件和资源，将编写的组件相关的class放入YXPlayerSDK/Classes中、资源图片文件放入YXPlayerSDK/Assets中，并配置podspec文件，然后进入Example文件夹执行pod install命令，再打开项目工程可以看到，刚刚添加的组件已经在Pods子工程下Development Pods/YXPlayerSDK中了。</p>
+<p>pod会把添加的资源文件编译成bundle，所以引用资源文件的写法：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">NSBundle *bundle = [NSBundle bundleForClass:[self class]];</div><div class="line">NSURL *bundleURL = [bundle URLForResource:@&quot;YXPlayerSDK&quot; withExtension:@&quot;bundle&quot;];</div><div class="line">NSBundle *resourceBundle = [NSBundle bundleWithURL: bundleURL];</div><div class="line">UIImage *img = [UIImage imageNamed:@&quot;playerPause&quot; inBundle:resourceBundle compatibleWithTraitCollection:nil];</div></pre></td></tr></table></figure>
+<p>然后提交代码push到远程分支，并打个tag推送到远程分支，这个tag必须和podspec文件的s.source = { :git =&gt; “<a href="http://git.jc/elephant-ios-component/YXPlayerSDK.git" target="_blank" rel="external">http://git.jc/elephant-ios-component/YXPlayerSDK.git</a>“, :tag =&gt; “0.0.2” }中tag一致。</p>
+<h3 id="4、编辑podspec文件"><a href="#4、编辑podspec文件" class="headerlink" title="4、编辑podspec文件"></a>4、编辑podspec文件</h3><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div></pre></td><td class="code"><pre><div class="line">Pod::Spec.new do |s|</div><div class="line">#名称</div><div class="line">s.name             = &quot;YXPlayerSDK&quot;    </div><div class="line">#版本号</div><div class="line">s.version          = &quot;0.1.0&quot;            </div><div class="line">#简短介绍</div><div class="line">s.summary          = &quot;Just Testing.&quot;    </div><div class="line">#详细介绍</div><div class="line">s.description      = &lt;&lt;-DESC</div><div class="line">                     YXPlayerSDK description</div><div class="line">                     DESC</div><div class="line">#主页,这里要填写可以访问到的地址，不然验证不通过</div><div class="line">s.homepage         = &quot;http://git.jc/elephant-ios-component/YXPlayerSDK.git&quot;   </div><div class="line">#截图</div><div class="line"># s.screenshots     = &quot;www.example.com/screenshots_1&quot;, &quot;www.example.com/screenshots_2&quot; </div><div class="line">#开源协议</div><div class="line">s.license          = &apos;MIT&apos; </div><div class="line">#作者信息</div><div class="line">s.author           = &#123; &apos;muhuashanjin&apos; =&gt; &apos;tanghy@gold-finance.com.cn&apos; &#125;  </div><div class="line">#项目地址，这里不支持ssh的地址，验证不通过，只支持HTTP和HTTPS，最好使用HTTPS</div><div class="line">s.source           = &#123; :git =&gt; &quot;http://git.jc/elephant-ios-component/YXPlayerSDK.git&quot;, :tag =&gt; &quot;0.0.2&quot; &#125;   </div><div class="line">#多媒体介绍地址</div><div class="line"># s.social_media_url = &apos;https://twitter.com/&lt;twitter_username&gt;&apos;                       </div><div class="line">#支持的平台及版本</div><div class="line">s.platform     = :ios, &apos;8.0&apos;     </div><div class="line">#是否使用ARC，如果指定具体文件，则具体的问题使用ARC</div><div class="line">s.requires_arc = true                   </div><div class="line">#代码源文件地址，**/*表示Classes目录及其子目录下所有文件，如果有多个目录下则用逗号分开，如果需要在项目中分组显示，这里也要做相应的设置</div><div class="line">s.source_files = &apos;YXPlayerSDK/Classes/**/*&apos;     </div><div class="line">#资源文件地址</div><div class="line">s.resource_bundles = &#123;</div><div class="line">  &apos;YXPlayerSDK&apos; =&gt; [&apos;YXPlayerSDK/Assets/*.png&apos;]</div><div class="line">&#125;                      </div><div class="line">#公开头文件地址</div><div class="line">s.public_header_files = &apos;YXPlayerSDK/Classes/**/*.h&apos;  </div><div class="line">#该pod依赖的系统framework，多个用逗号隔开</div><div class="line">s.frameworks = &apos;UIKit&apos;,&apos;CoreGraphics&apos;</div><div class="line">#该pod依赖的系统library，多个用逗号隔开</div><div class="line">s.libraries  = &apos;iconv&apos;,&apos;sqlite3&apos;,&apos;stdc++&apos;,&apos;z&apos;</div><div class="line">#第三方.a文件</div><div class="line">s.vendored_libraries = &apos;YXPlayerSDK/Classes/ThirdParty/*.&#123;a&#125;&apos;</div><div class="line">#第三方frameworks文件</div><div class="line">spec.vendored_frameworks = [&apos;YXPlayerSDK/Classes/BaiduMap_IOSSDK_v3.0.0_Lib/BaiduMapAPI_Base.framework&apos;,</div><div class="line">&apos;YXPlayerSDK/Classes/BaiduMap_IOSSDK_v3.0.0_Lib/BaiduMapAPI_Location.framework&apos;]</div><div class="line">#依赖关系，该项目所依赖的其他库，如果有多个需要填写多个s.dependency</div><div class="line">s.dependency &apos;AFNetworking&apos;, &apos;~&gt; 2.3&apos;   </div><div class="line">end</div></pre></td></tr></table></figure>
+<p>如果要添加更多的模块到YXPlayerSDK之中，包括工具类，底层Model及类目扩展等，就需要subspec功能，给YXPlayerSDK创建了多个子分支。</p>
+<p>具体做法是先将源文件添加到YXPlayerSDK/Classes中，然后按照不同的模块对文件目录进行整理，假如我有2个模块，所以在YXPlayerSDK/Classes下会创建了2个子目录，注释podspec文件的s.source_files和s.dependency，修改如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line">s.subspec &apos;TestOne&apos; do |testOne|</div><div class="line">    testOne.source_files = &apos;YXPlayerSDK/Classes/testOne/*&apos;</div><div class="line">    testOne.public_header_files = &apos;YXPlayerSDK/Classes/testOne/**/*.h&apos;</div><div class="line">    testOne.dependency &apos;YXPlayerSDK/testTwo&apos;</div><div class="line">end</div><div class="line"></div><div class="line">s.subspec &apos;TestTwo&apos; do |testTwo|</div><div class="line">    testTwo.source_files = &apos;YXPlayerSDK/Classes/testTwo/*&apos;</div><div class="line">    testTwo.public_header_files = &apos;YXPlayerSDK/Classes/testTwo/**/*.h&apos;</div><div class="line">    testTwo.dependency &apos;YXPlayerSDK/TestOne&apos;</div><div class="line">end</div></pre></td></tr></table></figure>
+<p>完成后，进入Example文件夹执行pod install命令，会看到目录Development Pods/YXPlayerSDK下多了两个文件夹TestOne和TestTwo，目录结构如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div></pre></td><td class="code"><pre><div class="line">YXPlayerSDK</div><div class="line">├── YXPlayerSDK                                </div><div class="line">│   ├── Classes</div><div class="line">│        ├── TestOne                                 </div><div class="line">│        └── TestTwo                           </div><div class="line">├── TestTwo</div><div class="line">├── Resources                               </div><div class="line">└── Support Files                                                  </div><div class="line">      ||</div><div class="line"> pod install 之后，目录结构变化</div><div class="line">      ||                                             </div><div class="line">YXPlayerSDK</div><div class="line">├── TestOne                                </div><div class="line">│   ├── YXPlayerSDK</div><div class="line">│       ├── Classes</div><div class="line">│           ├── TestOne                             </div><div class="line">├── TestTwo</div><div class="line">├── Resources                               </div><div class="line">└── Support Files</div></pre></td></tr></table></figure>
+<p>由此创建了subspec所以项目整体的依赖dependency，源文件source_files，头文件public_header_files，资源文件resource等都移动到了各自的subspec中，每个subspec之间也可以有相互的依赖关系（只能单向依赖）如：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">testTwo.dependency &apos;YXPlayerSDK/TestOne&apos;</div></pre></td></tr></table></figure></p>
+<p>这样分为多个subspec，在项目pod就可以使用其中的某个subspec了，如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">pod &apos;YXPlayerSDK/TestOne&apos;</div><div class="line">或者</div><div class="line">pod &apos;YXPlayerSDK&apos;,:subspecs=&gt;[&apos;TestOne&apos;,&apos;TestTwo&apos;]</div></pre></td></tr></table></figure></p>
+<p>如果已经有了现成的项目，那么就需要给这个项目创建一个podspec文件，创建它需要执行Cocoapods的另外一个命令：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ pod spec create PodTestLibrary git@coding.net:wtlucky/podTestLibrary.git</div></pre></td></tr></table></figure>
+<h3 id="5、提交pod组件到Spec-Repo中"><a href="#5、提交pod组件到Spec-Repo中" class="headerlink" title="5、提交pod组件到Spec Repo中"></a>5、提交pod组件到Spec Repo中</h3><p>先验证编辑好的podsepc文件，如果因为有无关紧要的警告而未通过检查，则输入以下命令加上–allow-warnings：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ pod lib lint --allow-warnings</div></pre></td></tr></table></figure>
+<p>然后还可以本地测试podspec文件，创建一个新的项目，在这个项目的Podfile文件中直接指定刚才创建编辑好的podspec文件，看是否可用， 在Podfile中可以这样编辑：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pod &apos;YXPlayerSDK&apos;, :path =&gt; &apos;~/Desktop/git/JC_LivePod/YXPlayerSDK&apos;      #指定路径</div></pre></td></tr></table></figure></p>
+<p>编辑完成后，执行pod install命令安装依赖，可以看到YXPlayerSDK跟测试项目一样存在于Development Pods/PodTestLibrary中。</p>
+<p>没有自身的WARNING或者ERROR之后，就可以再次提交到Spec Repo中，命令如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ pod repo push JCLiveIOSSpecs YXPlayerSDK.podspec</div></pre></td></tr></table></figure>
+<p>之后到~/.cocoapods/repos/JCLiveIOSSpecs目录下查看，也使用pod search命令查看自己库：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">$ pod search YXPlayerSDK</div><div class="line">-&gt; YXPlayerSDK (0.0.4)</div><div class="line">   YXPlayerSDK</div><div class="line">   pod &apos;YXPlayerSDK&apos;, &apos;~&gt; 0.0.4&apos;</div><div class="line">   - Homepage: http://git.jc/elephant-ios-component/YXPlayerSDK.git</div><div class="line">   - Source:   http://git.jc/elephant-ios-component/YXPlayerSDK.git</div><div class="line">   - Versions: 0.0.4, 0.0.2, 0.0.1 [JCLiveIOSSpecs repo]</div><div class="line">(END)</div></pre></td></tr></table></figure></p>
+<h3 id="6、项目中导入pod私有库组件"><a href="#6、项目中导入pod私有库组件" class="headerlink" title="6、项目中导入pod私有库组件"></a>6、项目中导入pod私有库组件</h3><p>当你执行 <code>pod install</code> 的时候，CocoaPods 默认只会在master下搜索，而我们的spec是存在我们私有的JCLiveIOSSpecs目录下的，所以需要在Podfile中指定搜索路径，在文件顶部中如下两行代码：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">source &quot;https://github.com/CocoaPods/Specs.git&quot;                    #官方仓库地址</div><div class="line">source &quot;http://git.jc/elephant-ios-component/JCLiveIOSSpecs.git&quot;   #私有仓库地址</div></pre></td></tr></table></figure></p>
+<p>在指定pod的私有库组件时有一个坑，如pod ‘YXBase’, ‘~&gt; a.b.1’，cocoaPods实际pod组件的版本为a.b.x（x为当前版本库中最大值）。但如何pod指定版本，这就需要修改Podfile.lock文件中PODS:YXBase的版本号和Podfile文件中YXBase版本号一致</p>
+<h3 id="7、更新本地cocoapods的spec资源配置信息"><a href="#7、更新本地cocoapods的spec资源配置信息" class="headerlink" title="7、更新本地cocoapods的spec资源配置信息"></a>7、更新本地cocoapods的spec资源配置信息</h3><p>pod install 时报错：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">None of your spec sources contain a spec satisfying the dependencies: AFNetworking (~&gt; 3.1.0), AFNetworking (= 3.1.0)</div></pre></td></tr></table></figure>
+<p>这句话的意思是说：你spec资源中不包含AFNetworking的3.1.0的配置信息。这里面有个关键词，spec资源和配置信息。所以需要更新本地cocoapods的spec资源配置信息，使用命令:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ pod repo update</div></pre></td></tr></table></figure>
+<p>但<code>pod repo update</code>实际是更新整个.cocoapods下的所有库，其实我们可以只更新其中某个库来达到快速可用的目的。下面提供两个方法解决:</p>
+<p>（1）正规方法：<br>指定更新单独库<code>pod repo update /Users/&lt;user&gt;/.cocoapods/repos/master/Specs/&lt;lib name&gt;</code></p>
+<p>（2）野路子：<br>如果方法1仍然无法解决问题，而又着急使用。可以直接到相应目录下手动增加缺少的版本目录和spec文件，<code>/Users/&lt;user&gt;/.cocoapods/repos/master/Specs/&lt;lib name&gt;/3.2.0/&lt;lib name&gt;.spec</code>。spec文件参考git上相应库的版本。</p>
+<h3 id="8、Podfile文件中use-frameworks"><a href="#8、Podfile文件中use-frameworks" class="headerlink" title="8、Podfile文件中use_frameworks!"></a>8、Podfile文件中use_frameworks!</h3><ul>
+<li>如果我们使用了<code>use_frameworks!</code>，那么 pod 将以 <code>framework</code> 形式被链接，上面那段代码返回的bundle对象是<code>framework</code> 的 <code>bundle</code>，其实就是<code>.frame</code>。</li>
+<li>如果我们不使用了<code>use_frameworks!</code>，那么 pod 将以静态库（.a）的形式被链接，上面那段代码返回的bundle对象是<code>client target</code> 的 <code>mainBundle</code>，其实就是<code>.app</code></li>
+</ul>
+<h3 id="9、Podfile和target"><a href="#9、Podfile和target" class="headerlink" title="9、Podfile和target"></a>9、Podfile和target</h3><p>Podfile本质上是用来描述Xcode工程中的targets用的。如果不显式指定Podfile对应的target，CocoaPods会创建一个名称为default的隐式target，会和工程中的第一个target相对应。换句话说，如果在Podfile中没有指定target，那么只有工程里的第一个target能够使用Podfile中描述的Pods依赖库。</p>
+<p>如果想在一个Podfile中同时描述project中的多个target，根据需求的不同，可以有不同的实现方式：</p>
+<ul>
+<li><p>多个target中使用相同的Pods依赖库</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div></pre></td><td class="code"><pre><div class="line">link_with &apos;target1&apos;,&apos;target2&apos; </div><div class="line"></div><div class="line">platform :ios</div><div class="line">pod &apos;SDWebimage&apos;, &apos;~&gt; 1.1.1&apos;</div><div class="line"></div><div class="line">platform :ios ,&apos;7.0&apos;</div><div class="line">pod &apos;AFNetworking&apos;, &apos;~&gt; 2.3.1&apos;</div></pre></td></tr></table></figure>
+</li>
+<li><p>不同的target使用完全不同的Pods依赖库</p>
+  <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">target :&apos;target1&apos; do</div><div class="line">  platform :ios</div><div class="line">  pod &apos;SDWebimage&apos;, &apos;~&gt; 1.1.1&apos;</div><div class="line">end</div><div class="line"></div><div class="line">target :&apos;target2&apos; do</div><div class="line">  platform :ios ,&apos;7.0&apos;</div><div class="line">  pod &apos;AFNetworking&apos;, &apos;~&gt; 2.3.1&apos;</div><div class="line">end</div><div class="line">其中，do/end作为开始和结束标识符。</div></pre></td></tr></table></figure>
+</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2016/07/08/2016-07-08-SQLCipher/" rel="next" title="SQLCipher 让数据库不再裸奔">
+                <i class="fa fa-chevron-left"></i> SQLCipher 让数据库不再裸奔
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2016/10/09/2017-10-09-Project.pbxproj/" rel="prev" title="SQLCipher Project.pbxproj的剖析">
+                SQLCipher Project.pbxproj的剖析 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Mei Xia</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/muhuashanjin" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1、创建私有Spec-Repo"><span class="nav-number">1.</span> <span class="nav-text">1、创建私有Spec Repo</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2、创建Pod项目工程文件"><span class="nav-number">2.</span> <span class="nav-text">2、创建Pod项目工程文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3、创建私有库pod组件"><span class="nav-number">3.</span> <span class="nav-text">3、创建私有库pod组件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4、编辑podspec文件"><span class="nav-number">4.</span> <span class="nav-text">4、编辑podspec文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5、提交pod组件到Spec-Repo中"><span class="nav-number">5.</span> <span class="nav-text">5、提交pod组件到Spec Repo中</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6、项目中导入pod私有库组件"><span class="nav-number">6.</span> <span class="nav-text">6、项目中导入pod私有库组件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7、更新本地cocoapods的spec资源配置信息"><span class="nav-number">7.</span> <span class="nav-text">7、更新本地cocoapods的spec资源配置信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8、Podfile文件中use-frameworks"><span class="nav-number">8.</span> <span class="nav-text">8、Podfile文件中use_frameworks!</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9、Podfile和target"><span class="nav-number">9.</span> <span class="nav-text">9、Podfile和target</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Mei Xia</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
