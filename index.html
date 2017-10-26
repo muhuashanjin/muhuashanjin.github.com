@@ -547,8 +547,8 @@
 <p>这样分为多个subspec，在项目pod就可以使用其中的某个subspec了，如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">pod &apos;YXPlayerSDK/TestOne&apos;</div><div class="line">或者</div><div class="line">pod &apos;YXPlayerSDK&apos;,:subspecs=&gt;[&apos;TestOne&apos;,&apos;TestTwo&apos;]</div></pre></td></tr></table></figure></p>
 <p>如果已经有了现成的项目，那么就需要给这个项目创建一个podspec文件，创建它需要执行Cocoapods的另外一个命令：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ pod spec create PodTestLibrary git@coding.net:wtlucky/podTestLibrary.git</div></pre></td></tr></table></figure>
-<h3 id="5、提交pod组件到Spec-Repo中"><a href="#5、提交pod组件到Spec-Repo中" class="headerlink" title="5、提交pod组件到Spec Repo中"></a>5、提交pod组件到Spec Repo中</h3><p>先验证编辑好的podsepc文件，如果因为有无关紧要的警告而未通过检查，则输入以下命令加上–allow-warnings：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ pod lib lint --allow-warnings</div></pre></td></tr></table></figure>
+<h3 id="5、提交pod组件到Spec-Repo中"><a href="#5、提交pod组件到Spec-Repo中" class="headerlink" title="5、提交pod组件到Spec Repo中"></a>5、提交pod组件到Spec Repo中</h3><p>先验证编辑好的podsepc文件，如果因为有无关紧要的警告而未通过检查，则输入以下命令加上–allow-warnings，如果想要输出编译过程，加上–verbose：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ pod lib lint --allow-warnings --verbose</div></pre></td></tr></table></figure>
 <p>然后还可以本地测试podspec文件，创建一个新的项目，在这个项目的Podfile文件中直接指定刚才创建编辑好的podspec文件，看是否可用， 在Podfile中可以这样编辑：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pod &apos;YXPlayerSDK&apos;, :path =&gt; &apos;~/Desktop/git/JC_LivePod/YXPlayerSDK&apos;      #指定路径</div></pre></td></tr></table></figure></p>
 <p>编辑完成后，执行pod install命令安装依赖，可以看到YXPlayerSDK跟测试项目一样存在于Development Pods/PodTestLibrary中。</p>
 <p>没有自身的WARNING或者ERROR之后，就可以再次提交到Spec Repo中，命令如下：</p>
@@ -566,8 +566,16 @@
 <p>（1）正规方法：<br>指定更新单独库<code>pod repo update /Users/&lt;user&gt;/.cocoapods/repos/master/Specs/&lt;lib name&gt;</code></p>
 <p>（2）野路子：<br>如果方法1仍然无法解决问题，而又着急使用。可以直接到相应目录下手动增加缺少的版本目录和spec文件，<code>/Users/&lt;user&gt;/.cocoapods/repos/master/Specs/&lt;lib name&gt;/3.2.0/&lt;lib name&gt;.spec</code>。spec文件参考git上相应库的版本。</p>
 <h3 id="8、Podfile文件中use-frameworks"><a href="#8、Podfile文件中use-frameworks" class="headerlink" title="8、Podfile文件中use_frameworks!"></a>8、Podfile文件中use_frameworks!</h3><ul>
-<li>如果我们使用了<code>use_frameworks!</code>，那么 pod 将以 <code>framework</code> 形式被链接，上面那段代码返回的bundle对象是<code>framework</code> 的 <code>bundle</code>，其实就是<code>.frame</code>。</li>
-<li>如果我们不使用了<code>use_frameworks!</code>，那么 pod 将以静态库（.a）的形式被链接，上面那段代码返回的bundle对象是<code>client target</code> 的 <code>mainBundle</code>，其实就是<code>.app</code></li>
+<li>在Podfile文件里不使用 use_frameworks! 则是会生成相应的 .a文件（静态链接库），通过 static libraries 这个方式来管理pod的代码。Linked:libPods-xxx.a包含了其它用pod导入的第三方框架的.a文件</li>
+</ul>
+<ul>
+<li><p>在Podfile文件里使用了use_frameworks! 则cocoapods 会生成相应的 .frameworks文件（动态链接库：实际内容为 Header + 动态链接库 + 资源文件），使用 dynamic frameworks 来取代 static libraries 方式。Linked:Pods_xxx.framework包含了其它用pod导入的第三方框架的.framework文件。</p>
+</li>
+<li><p>用cocoapods 导入swift 框架 到 swift项目和OC项目都必须要 use_frameworks!</p>
+</li>
+<li><p>使用 dynamic frameworks，必须要在Podfile文件中添加 use_frameworks!</p>
+<p>具体分析地址：<a href="https://segmentfault.com/a/1190000007076865" target="_blank" rel="external">Podfile中的 use_frameworks!</a></p>
+</li>
 </ul>
 <h3 id="9、Podfile和target"><a href="#9、Podfile和target" class="headerlink" title="9、Podfile和target"></a>9、Podfile和target</h3><p>Podfile本质上是用来描述Xcode工程中的targets用的。如果不显式指定Podfile对应的target，CocoaPods会创建一个名称为default的隐式target，会和工程中的第一个target相对应。换句话说，如果在Podfile中没有指定target，那么只有工程里的第一个target能够使用Podfile中描述的Pods依赖库。</p>
 <p>如果想在一个Podfile中同时描述project中的多个target，根据需求的不同，可以有不同的实现方式：</p>
