@@ -300,7 +300,7 @@
       
         
           
-            <h1 id="Pod私有库二进制化"><a href="#Pod私有库二进制化" class="headerlink" title="Pod私有库二进制化"></a>Pod私有库二进制化</h1><p>在制作 <strong><a href="https://muhuashanjin.github.io/2017/09/25/2017-09-25-Pod/" target="_blank" rel="external">Pod私有库</a></strong> 之后，接下来我们在此基础上实现 <strong>Pod私有库的二进制化</strong>，什么是二进制化？其实通过CocosPods导入的我们制作的Pod私有库，实际是源码，会随着主工程一起编译，二进制化指的是通过编译把组件的源码转换成静态库或动态库，以提高该组件在App项目中的编译速度。打开 Pod 私有库示例工程，实现以下步骤：</p>
+            <p>在制作 <strong><a href="https://muhuashanjin.github.io/2017/09/25/2017-09-25-Pod/" target="_blank" rel="external">Pod私有库</a></strong> 之后，接下来我们在此基础上实现 <strong>Pod私有库的二进制化</strong>，什么是二进制化？其实通过CocosPods导入的我们制作的Pod私有库，实际是源码，会随着主工程一起编译，二进制化指的是通过编译把组件的源码转换成静态库或动态库，以提高该组件在App项目中的编译速度。打开 Pod 私有库示例工程，实现以下步骤：</p>
 <h2 id="1、添加-Static-Library"><a href="#1、添加-Static-Library" class="headerlink" title="1、添加 Static Library"></a>1、添加 Static Library</h2><ul>
 <li><h5 id="在-xcode-中创建新-Target-gt-YXPlayerSDKBinary："><a href="#在-xcode-中创建新-Target-gt-YXPlayerSDKBinary：" class="headerlink" title="在 xcode 中创建新 Target -&gt; YXPlayerSDKBinary："></a>在 xcode 中创建新 Target -&gt; YXPlayerSDKBinary：</h5><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">YXPlayerSDK-&gt;New-&gt;Target-&gt;iOS-&gt;Framework &amp; Library-&gt;Cocoa Touch Static Library</div></pre></td></tr></table></figure>
 <p> 如果项目最低支持到iOS8可以创建 Dynamic Framework。</p>
