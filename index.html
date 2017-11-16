@@ -674,7 +674,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="https://github.com/muhuashanjin/2017/09/25/2017-09-25-Pod/">
+    <link itemprop="mainEntityOfPage" href="https://github.com/muhuashanjin/2017/09/25/2017-09-25-Pod私有库/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Mei Xia">
@@ -693,7 +693,7 @@
         
           <h1 class="post-title" itemprop="name headline">
                 
-                <a class="post-title-link" href="/2017/09/25/2017-09-25-Pod/" itemprop="url">私有Pod私有库</a></h1>
+                <a class="post-title-link" href="/2017/09/25/2017-09-25-Pod私有库/" itemprop="url">私有Pod私有库</a></h1>
         
 
         <div class="post-meta">
@@ -770,7 +770,7 @@
 <p>然后还可以本地测试podspec文件，创建一个新的项目，在这个项目的Podfile文件中直接指定刚才创建编辑好的podspec文件，看是否可用， 在Podfile中可以这样编辑：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pod &apos;YXPlayerSDK&apos;, :path =&gt; &apos;~/Desktop/git/JC_LivePod/YXPlayerSDK&apos;      #指定路径</div></pre></td></tr></table></figure></p>
 <p>编辑完成后，执行pod install命令安装依赖，可以看到YXPlayerSDK跟测试项目一样存在于Development Pods/PodTestLibrary中。</p>
 <p>没有自身的WARNING或者ERROR之后，就可以再次提交到Spec Repo中，命令如下：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ pod repo push JCLiveIOSSpecs YXPlayerSDK.podspec</div></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ pod repo push JCLiveIOSSpecs YXPlayerSDK.podspec --allow-warnings</div></pre></td></tr></table></figure>
 <p>之后到~/.cocoapods/repos/JCLiveIOSSpecs目录下查看，也使用pod search命令查看自己库：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">$ pod search YXPlayerSDK</div><div class="line">-&gt; YXPlayerSDK (0.0.4)</div><div class="line">   YXPlayerSDK</div><div class="line">   pod &apos;YXPlayerSDK&apos;, &apos;~&gt; 0.0.4&apos;</div><div class="line">   - Homepage: http://git.jc/elephant-ios-component/YXPlayerSDK.git</div><div class="line">   - Source:   http://git.jc/elephant-ios-component/YXPlayerSDK.git</div><div class="line">   - Versions: 0.0.4, 0.0.2, 0.0.1 [JCLiveIOSSpecs repo]</div><div class="line">(END)</div></pre></td></tr></table></figure></p>
 <p>这里特别强调一下，如果 s.dependency 中依赖的是 pod 私有库的话，验证和提交命令都需要指定 source ：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">#验证</div><div class="line">pod lib lint --sources=http://git.jc/elephant-ios-component/JCLiveIOSSpecs.git,https://github.com/CocoaPods/Specs.git --allow-warnings</div><div class="line"></div><div class="line">#提交</div><div class="line">pod repo push JCLiveIOSSpecs YXPlayerSDK.podspec --sources=http://git.jc/elephant-ios-component/JCLiveIOSSpecs.git,https://github.com/CocoaPods/Specs.git --allow-warnings</div></pre></td></tr></table></figure>
