@@ -764,9 +764,14 @@
 </li>
 <li><p>第三种</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">spec.resource_bundles = &#123;</div><div class="line">&apos;MyLibrary&apos; =&gt; [&apos;Resources/*.png&apos;],</div><div class="line">&apos;OtherResources&apos; =&gt; [&apos;OtherResources/*.png&apos;]</div><div class="line">&#125;</div></pre></td></tr></table></figure>
-<p>这种方法利用 framework 的命名空间，有效防止了资源冲突。</p>
-<p>pod会把添加的资源文件编译成bundle，使用方法是先拿到最外面的 bundle，然后再去找下面指定名字 的 bundle 对象，再搜索具体资源</p>
+<p>这种方法利用 framework 的命名空间，有效防止了资源冲突。pod会把添加的资源文件编译成bundle，使用方法是先拿到最外面的 bundle，然后再去找下面指定名字 的 bundle 对象，再搜索具体资源，其中需要注意的方法 [NSBundle bundleForClass:&lt;#ClassFromPodspec#&gt;] 返回某个 class 对应的 bundle 对象。具体的：</p>
+<ul>
+<li>如果你的 pod 以 framework 形式被链接，那么返回这个 framework 的 bundle。</li>
+<li>如果以静态库（<code>.a</code>）的形式被链接，那么返回 client target 的 bundle，即 mainBundle。</li>
+</ul>
+<p>以下是如何访问：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">NSBundle *bundle = [NSBundle bundleForClass:[MYSomeClass class]];</div><div class="line">NSURL *bundleURL = [bundle URLForResource:@&quot;YXPlayerSDK&quot; withExtension:@&quot;bundle&quot;];</div><div class="line">NSBundle *resourceBundle = [NSBundle bundleWithURL: bundleURL];</div><div class="line">UIImage *img = [UIImage imageNamed:icon inBundle:bundle compatibleWithTraitCollection:nil];</div></pre></td></tr></table></figure>
+<p>具体分析见 <a href="http://blog.xianqu.org/2015/08/pod-resources/" target="_blank" rel="external">Pod 添加资源文件</a>。</p>
 </li>
 </ul>
 <p>然后提交整个项目代码push到远程分支，并打个tag推送到远程分支，这个tag必须和podspec文件的s.source = { :git =&gt; “<a href="http://git.jc/elephant-ios-component/YXPlayerSDK.git" target="_blank" rel="external">http://git.jc/elephant-ios-component/YXPlayerSDK.git</a>“, :tag =&gt; “0.0.2” }中tag一致。</p>
@@ -781,9 +786,9 @@
 <p>这样分为多个subspec，在项目pod就可以使用其中的某个subspec了，如下:<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">pod &apos;YXPlayerSDK/TestOne&apos;</div><div class="line">或者</div><div class="line">pod &apos;YXPlayerSDK&apos;,:subspecs=&gt;[&apos;TestOne&apos;,&apos;TestTwo&apos;]</div></pre></td></tr></table></figure></p>
 <p>如果已经有了现成的项目，那么就需要给这个项目创建一个podspec文件，创建它需要执行Cocoapods的另外一个命令：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ pod spec create PodTestLibrary git@coding.net:wtlucky/podTestLibrary.git</div></pre></td></tr></table></figure>
-<h3 id="5、提交pod组件到Spec-Repo中"><a href="#5、提交pod组件到Spec-Repo中" class="headerlink" title="5、提交pod组件到Spec Repo中"></a>5、提交pod组件到Spec Repo中</h3><p>先验证编辑好的podsepc文件，如果因为有无关紧要的警告而未通过检查，则输入以下命令加上–allow-warnings，如果想要输出编译过程，加上–verbose：</p>
+<h3 id="5、提交pod组件到Spec-Repo中"><a href="#5、提交pod组件到Spec-Repo中" class="headerlink" title="5、提交pod组件到Spec Repo中"></a>5、提交pod组件到Spec Repo中</h3><p>先验证编辑好的podsepc文件，如果因为有无关紧要的警告而未通过检查，则输入以下命令加上<code>--allow-warnings</code> ，如果想要输出编译过程，加上<code>--verbose</code>：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">$ pod lib lint --allow-warnings --verbose</div></pre></td></tr></table></figure>
-<p>如果私有库里面引用静态库会导致验证是无法通过的，报错  <strong>include of non-modular header inside framework module ··· [-Werror,-Wnon-modular-include-in-framework-module]</strong> ，加上–use-libraries。</p>
+<p>如果私有库里面引用静态库会导致验证是无法通过的，报错  <strong>include of non-modular header inside framework module ··· [-Werror,-Wnon-modular-include-in-framework-module]</strong> ，加上<code>--use-libraries</code>。</p>
 <p>然后还可以本地测试podspec文件，创建一个新的项目，在这个项目的Podfile文件中直接指定刚才创建编辑好的podspec文件，看是否可用， 在Podfile中可以这样编辑：</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">pod &apos;YXPlayerSDK&apos;, :path =&gt; &apos;~/Desktop/git/JC_LivePod/YXPlayerSDK&apos;      #指定路径</div></pre></td></tr></table></figure>
 <p>编辑完成后，执行pod install命令安装依赖，可以看到YXPlayerSDK跟测试项目一样存在于Development Pods/PodTestLibrary中。</p>
