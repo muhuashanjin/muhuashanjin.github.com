@@ -229,6 +229,294 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://github.com/muhuashanjin/2018/06/22/MDL之初试/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mei Xia">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="The Blog Of Mei Xia">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/06/22/MDL之初试/" itemprop="url">初试 MDL</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-22T00:00:00+08:00">
+                2018-06-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h1 id="初试-MDL"><a href="#初试-MDL" class="headerlink" title="初试 MDL"></a>初试 MDL</h1><h2 id="MDL-介绍"><a href="#MDL-介绍" class="headerlink" title="MDL 介绍"></a>MDL 介绍</h2><p>MDL 是 MicroStation 程序的开发手段，为开发人员提供工具创建应用程序，以充分利用 MicroStation 和基于 MicroStation 的应用程序的强大功能。MDL 的开发手段有三种分别是PureMDL、NativeCode、Addins，早期使用 PureMDL 开发的时候， MDL 是MicroStation Development Language（MicroStation开发语言）的简称，后来使用NativeCode 的开发方法 ，这里的MDL不再是MicroStation Development Language而是MicroStation Development Library（MicroStation开发库）。MDL 应用程序与 MicroStation 紧密集成，一个 MDL 命令或操作不能与一个核心的 MicroStation 命令区分开来。事实上，基础 MicroStation 产品的许多特性都是作为 MDL 扩展实现的。MDL可用于开发简单的实用程序、定制的命令或复杂的商业应用程序。</p>
+<p><strong>MDL开发手段：</strong></p>
+<ol>
+<li><p>PureMDL：使用 Bentley 公司基于 C语言的一种扩展语言编写，编译器和链接器均由Bentley公司提供，最终生成的程序扩展名为.MA（MicroStation  Application的缩写），开发者只需在源代码编辑器编辑程序</p>
+</li>
+<li><p>NativeCode：MDL可以基于C++来开发，采用微软的Visual Studio作为开发工具来生成本机代码的DLL，同时，为了保留MDL的一些特性（如命令表、MDL特有的资源等），仍然需要生成一个.MA文件。采用面向对象的编程方式来写代码，还能直接调用任何VC++中可以调用的功能。大多数新的MicroStation开发功能（如XAttribute、点云、i-model等）都采用类的形式提供，这些新的功能也要求我们必须使用NativeCode MDL来开发应用</p>
+</li>
+<li><p>Addins：Addins是基于.NET框架的，使用 C#、C++/CLI 或 VB.NET 语言来开发 Addins 应用程序。相比较于MVBA(MicroStation Visual Basic for Application)，Addins能支持命令表、能编译成DLL；相比较于MDL(MicroStation Development Language/Library)，Addins 能用 WinForm 来设计界面，再也不用学习对初学者来说难以掌握的.r资源了</p>
+<p><strong>ps：本系列 blog 中的例子均使用 NativeCode 的开发手段</strong></p>
+</li>
+</ol>
+<h2 id="MDL-开发环境"><a href="#MDL-开发环境" class="headerlink" title="MDL 开发环境"></a>MDL 开发环境</h2><p>由于使用 NativeCode 作为MDL开发手段，所以采用微软的Visual Studio作为开发工具，本系列 blog 的示例是在 MicroStation V8i (SELECTseries 3) 运行，所以 VS 的版本为2005，这里需要强调的是，如果安装了 VS2013或或者其他版本，也仅仅是用2013作为编辑器、调试器而不是作为编译器和链接器。后面两个功能仍然是用VS2005。只要你用bmake来编译V8i的代码，它会自动搜索到 VS2005 的 cl.exe 和 link.exe 的。对于大多数情况下用VS2013也能创建V8i下的代码，但对于一些特定情况，生成的代码一执行就会导致Mstn崩溃，比如点云类编程。所以，一定要用VS2005来支撑 V8i 的开发。</p>
+<p>开发环境配置如下（以下软件的下载链接: <a href="https://pan.baidu.com/s/1StcP62cxdUv3opP1lFkbEA" target="_blank" rel="external">https://pan.baidu.com/s/1StcP62cxdUv3opP1lFkbEA</a> 提取密码: q33e）：</p>
+<ul>
+<li>安装 MicroStation SDK 对应 MicroStation V8i (SELECTseries 3) 版本</li>
+</ul>
+<ul>
+<li><p>安装 VS 2005 ，详细配置查看 bentley 社区文章 <a href="https://communities.bentley.com/communities/other_communities/bdn_other_communities/b/bdn-blog/posts/mdl-3" target="_blank" rel="external">在Visual Studio环境中生成并调试MDL应用</a></p>
+</li>
+<li><p>安装 Visual Assist（代码提示补全插件）</p>
+<ul>
+<li><p>破解：解压之后安装，然后全局搜索 VA_X.dll，使用解压之后的 VA_X.dll 全部替换实现破解。</p>
+</li>
+<li><p>识别 .fdf 文件：在MicroStation V8 中，引入了新的文件类型“ .fdf”，它们是函数定义文件(Function Definition File)。这些文件中含有某一类别的MDL函数原型定义，同时又有对包含文件的引用，所以在V8编程中经常只需在程序开头包含这些.fdf文件就可以了。但 Visual Assist 识别不了 .fdf 文件，就无法提供 .fdf 文件函数的提示，解决方法：</p>
+<ol>
+<li><p>输入 regedit 命令打开注册表</p>
+</li>
+<li><p>在注册表路径 HKEY_CURRENT_USER\SOFTWARE\Whole Tomato\Visual Assist X\ 下找到对应 Visual Assist 版本，把下面信息导入注册表：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">Windows Registry Editor Version 5.00</div><div class="line"></div><div class="line">[HKEY_CURRENT_USER\SOFTWARE\Whole Tomato\Visual Assist X\VANet15]</div><div class="line">&quot;ExtHeader&quot;=&quot;.h;.hh;.hpp;.hxx;.ipp;.tlh;.inl;.p;.rh;.dh;.ih;.ph;.hm;.fdf;&quot;</div><div class="line">&quot;ExtSource&quot;=&quot;.c;.cpp;.mc;.cc;.cxx;.tli;.mt;.moc;&quot;</div><div class="line">&quot;ExtResource&quot;=&quot;.rc;.rc2;.r;&quot;</div></pre></td></tr></table></figure>
+</li>
+</ol>
+</li>
+</ul>
+</li>
+</ul>
+<h2 id="MDL-实践"><a href="#MDL-实践" class="headerlink" title="MDL 实践"></a>MDL 实践</h2><h3 id="示例程序的源码目录结构"><a href="#示例程序的源码目录结构" class="headerlink" title="示例程序的源码目录结构"></a>示例程序的源码目录结构</h3><p>示例程序下载链接: <a href="https://pan.baidu.com/s/1Xc43qlfr9STwPLgoxxj8SQ" target="_blank" rel="external">https://pan.baidu.com/s/1Xc43qlfr9STwPLgoxxj8SQ</a> 提取密码: rqx4a，找到 adrwdemo 下载到本地，这个 demo 的功能是提供一个基本画图工具栏，可以画线、矩形、圆并能修改。程序目录结构，如下图：</p>
+<p><img src="http://7xw5qd.com1.z0.glb.clouddn.com/file_struct.png" alt="file_struct"></p>
+<p><strong>左边红色框内的源码目录结构：</strong></p>
+<ul>
+<li>.cpp：MDL的代码源文件（PureMDL 与 NativeCode 不同在于代码源文件后缀为 .mc）。</li>
+<li>.h：头文件或包含文件，其中包含由多个源文件共享的宏定义或数据结构体的定义等等。头文件包含在 .app文件、.mt文件和 .r文件中。</li>
+<li>.r：资源源文件，资源源文件中的一些数据示例是对话框描述、命令表和消息。rcomp读取一个资源源文件并生成一个资源文件。</li>
+<li>.mt：类型文件，用来生成MDL C表达式内置函数的类型定义的源文件。rsctype读取类型文件并生成资源源文件。</li>
+<li>.mke：makefile文件，由bmake读取，按照其中的规则构建应用程序。</li>
+</ul>
+<p><strong>下面是编译过程中的产生的文件类型：</strong></p>
+<ul>
+<li>.mo：对象文件，由mcomp创建。这些文件被用作mlink的输入。</li>
+<li>.mp：程序文件，一种特殊类型的资源文件，可以使用rlib与其他资源文件合并。由mlink创建的程序文件包含MDL可以解释的伪代码。程序文件是最简单的应用程序文件。</li>
+<li>.rsc：资源文件，rcomp生成大多数资源文件。MDL程序和应用程序文件也是资源文件。</li>
+<li>.mm：映射文件，由mlink生成。</li>
+<li>.ml：库文件，由mlib创建和更新。库文件通常包含MDL对象文件，也可以包含任何类型的文件。</li>
+<li>.ma：应用程序文件，一个包含与一个应用程序相关的所有资源的资源文件。一个应用程序文件可以用mlink或rlib创建。</li>
+</ul>
+<h3 id="运行示例程序"><a href="#运行示例程序" class="headerlink" title="运行示例程序"></a>运行示例程序</h3><ol>
+<li><p><strong>以管理员身份运行</strong> 打开 VS2005 （编译程序时需要管理员权限在MS目录下创建目录），在顶部菜单栏中点击文件 - 打开 - 项目/解决方案，在示例程序目录下找到 adrwdemo.vcproj 打开后，参照【MDL 源码目录结构】中的截图。</p>
+</li>
+<li><p>如果在【MDL 开发环境】那一步中配置好了 vs2005 需要的环境变量和外部工具，就可以点击顶部菜单栏中 【工具】- 【Rebuild MDLApp (Debug)】运行，如下图：</p>
+<p><img src="http://7xw5qd.com1.z0.glb.clouddn.com/run_mdl.png" alt="run_mdl"></p>
+<p>如果点击运行之后，在编译日志输出框中显示上图左下角红框中的内容，就表示编译成功</p>
+</li>
+<li><p>编译成功之后，在 MicroStation V8i (SELECTseries 3)  中，打开【实用工具】-【命令行】或者直接按F9，在输入框中键入 <strong>mdl load adrwdemo </strong>进行加载使用，如果加载成功，会在消息框中显示 <strong>adrwdemo 已加载</strong>，并在当前视图中出现 adrwdemo  工具对话框，如下图：</p>
+<p><img src="http://7xw5qd.com1.z0.glb.clouddn.com/keyin_load.png" alt="keyin_load"></p>
+</li>
+<li><p>点击 adrwdemo 工具对话框中左边第三个个命令进行画矩形，也可以直接在【命令行】中键入【demo RECTANGLE】进行操作，如下图：</p>
+<p><img src="http://7xw5qd.com1.z0.glb.clouddn.com/play_cmd.png" alt="play_cmd"></p>
+<p>点击之后显示上图标记的三点：</p>
+<ol>
+<li>显示画矩形的设置框，可以选择是否用结构或者是否显示坐标轴</li>
+<li>显示提示，命令为 【Rectangle】，并【enter point】输入一个数据点</li>
+<li>输入之后，显示 AccuDraw ，并根据鼠标点动态进行矩形的绘制，直到确定第二点，完成绘制。</li>
+</ol>
+</li>
+<li><p>注意事项：</p>
+<ul>
+<li>当在 VS 中编译示例程序 adrwdemo 时，需要确定在 MS 已经在【命令行】键入【mdl unload adrwdemo 】进行卸载，不然会因为当前 adrwdemo 正在进行使用，而无法再次编译。</li>
+<li>调试模式时，步骤为 【VS编译成功】 -&gt; 【打开 MS】-&gt;【调试-附加到进程】-&gt;【MS 加载程序】</li>
+</ul>
+</li>
+</ol>
+<h3 id="程序剖析"><a href="#程序剖析" class="headerlink" title="程序剖析"></a>程序剖析</h3><p><strong>程序需要编译生成可执行文件才能运行，普及一下计算机程序的编译过程：</strong></p>
+<ol>
+<li>预处理：序列化、宏定义展开、#include展开（引用文件展开）</li>
+<li>语法和语义分析：使用预处理后的单词构建词法树 - 执行语义分析生成语法树 - 输出AST（抽象语法树）</li>
+<li>代码生成和优化：将AST转化成更低级的中间码 - 优化生成代码 - 目标代码生成 - 输出汇编代码</li>
+<li>汇编程序：将汇编代码转化成目标文件 </li>
+<li>连接器：将多个目标文件合并成可执行文件（或者一个动态库）</li>
+</ol>
+<p><strong>而 MDL的编译，由以下提供的开发实用程序实现：</strong></p>
+<hr>
+<blockquote>
+<table>
+<thead>
+<tr>
+<th style="text-align:center">Utility name</th>
+<th style="text-align:left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align:center">bmake</td>
+<td style="text-align:left">用于为复杂的应用程序自动化编译、链接和资源构建的实用工具</td>
+</tr>
+<tr>
+<td style="text-align:center">mcomp</td>
+<td style="text-align:left">编译器用于编译MDL源文件</td>
+</tr>
+<tr>
+<td style="text-align:center">mlib</td>
+<td style="text-align:left">用来管理在库文件中文件镜像</td>
+</tr>
+<tr>
+<td style="text-align:center">mlink</td>
+<td style="text-align:left">将目标文件链接到一个程序中</td>
+</tr>
+<tr>
+<td style="text-align:center">rcomp</td>
+<td style="text-align:left">资源编译器用于编译资源源文件</td>
+</tr>
+<tr>
+<td style="text-align:center">rlib</td>
+<td style="text-align:left">将多个资源文件合并到一个资源文件中</td>
+</tr>
+<tr>
+<td style="text-align:center">rsctype</td>
+<td style="text-align:left">类型生成器用来为一组内置函数生成类型描述，被用于在运行时识别C的表达式（对话管理程序用C表达式去管理访问字符串）</td>
+</tr>
+<tr>
+<td style="text-align:center">rdump</td>
+<td style="text-align:left">转储资源文件的内容。如果在加载资源时遇到了麻烦，并且想要检查一个.r文件的内容，那么它是非常有用的（ps：rdu）</td>
+</tr>
+</tbody>
+</table>
+</blockquote>
+<p>结合图片中实用程序的描述和程序的编译过程步骤，可以看出 bmake 的作用就是简化应用程序的编译过程，本质就是表中实用程序结合。</p>
+<p>bmake 编译 PureMDL 应用程序的过程 ：</p>
+<p><img src="http://7xw5qd.com1.z0.glb.clouddn.com/PureMDL_bmake.jpg" alt="PureMDL_bmake"></p>
+<p>bmake 编译 NativeCode 应用程序的过程 ：</p>
+<p><img src="http://7xw5qd.com1.z0.glb.clouddn.com/NativeCode_bmake.jpg" alt="NativeCode_bmake"></p>
+<p>其中 cl.exe 和 link.exe 则是来自VS的编译器和连接器程序， cl（全称clang是C/C++编译器）与mcomp 作用一样也是编译源文件，而 link  与 mlink 作用一样也是链接目标文件。</p>
+<p>在了解源码目录的文件结构、程序运行情况以及 MDL编译原理之后，结合上述，剖析一下源码中的文件控制的功能：</p>
+<ul>
+<li><p>文件夹【国际化】下的两个文件 adrwdemomsg.r 和 adrwdtxt.h，控制命令提示（ps：Rectangle-&gt;Enter point）和对话框文本字符定义，并能根据需要切换语言，如：汉语、法语等，来实现国际化需求。</p>
+<p><img src="http://7xw5qd.com1.z0.glb.clouddn.com/analyze_1.png" alt="analyze_1"></p>
+</li>
+<li><p>文件夹【头文件】下的 adrwdemo.h 控制宏定义以及定义全局的数据结构体，在点击工具栏矩形命令后弹出的设置框（ps：Use construction Plane 和 Show Axes）在设置框选择的值就是由 .h 文件定义的结构体变量控制。</p>
+<p><img src="http://7xw5qd.com1.z0.glb.clouddn.com/analyze_2.png" alt="analyze_2"></p>
+</li>
+<li><p>文件夹【源文件】下的 adrwdemo.cpp 就是程序核心功能、逻辑的编写，实现画线、画矩形等功能。</p>
+<p><img src="http://7xw5qd.com1.z0.glb.clouddn.com/analyze_3.png" alt="analyze_3"></p>
+</li>
+<li><p>文件夹【资源文件】下：</p>
+<ul>
+<li><p>adrwdemo.r：工具对话框编的资源源文件，用来编写工具对话框，控制对话框条目的位置、类型、显示内容、条目执行的命令。</p>
+<p><img src="http://7xw5qd.com1.z0.glb.clouddn.com/analyze_4.png" alt="analyze_4"></p>
+</li>
+<li><p>adrwdemocmd.r：命令表的资源源文件，用来编写 adrwdemo 功能对应的命令，本质在对话框中选择的每一个操作背后其实对应的就是一个命令，所以在对话框选择绘制矩形也能在【命令行】中键入【demo rectangle】实现。</p>
+<p><img src="http://7xw5qd.com1.z0.glb.clouddn.com/analyze_5.png" alt="analyze_5"></p>
+</li>
+<li><p>adrwdemotyp.mt：类型文件，用来发布在 .h 定义的数据的结构体，以此来识别在资源源文件中定义的结构。</p>
+<p><img src="http://7xw5qd.com1.z0.glb.clouddn.com/analyze_6.png" alt="analyze_6"></p>
+</li>
+</ul>
+</li>
+<li><p>adrwdemo.mke：makefile文件，定义示例程序 adrwdemo 依赖的类库和资源文并包含构建应用程序所需的命令和指令 ，使用按一定规则构建应用程序</p>
+<p><img src="http://7xw5qd.com1.z0.glb.clouddn.com/analyze_7.png" alt="analyze_7"></p>
+<p>​</p>
+</li>
+</ul>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="https://github.com/muhuashanjin/2017/11/02/2017-11-02-Pod私有库二进制化/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -828,6 +1116,7 @@
   <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">target :&apos;target1&apos; do</div><div class="line">  platform :ios</div><div class="line">  pod &apos;SDWebimage&apos;, &apos;~&gt; 1.1.1&apos;</div><div class="line">end</div><div class="line"></div><div class="line">target :&apos;target2&apos; do</div><div class="line">  platform :ios ,&apos;7.0&apos;</div><div class="line">  pod &apos;AFNetworking&apos;, &apos;~&gt; 2.3.1&apos;</div><div class="line">end</div><div class="line">其中，do/end作为开始和结束标识符。</div></pre></td></tr></table></figure>
 </li>
 </ul>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a href="http://blog.csdn.net/daiyelang/article/details/68488760" target="_blank" rel="external">Cocoapods使用私有库中遇到的坑</a></p>
 
           
         
@@ -1091,7 +1380,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-count">5</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -1142,7 +1431,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>

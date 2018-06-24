@@ -86,7 +86,7 @@
 <meta property="og:site_name" content="The Blog Of Mei Xia">
 <meta property="og:description" content="1、创建私有Spec RepoSpec Repo是什么？它是所有的Pods的一个索引，就是一个容器，所有公开的Pods都在这个里面，它实际是一个Git仓库remote端在GitHub上，所以想要创建pod私有库，需要创建类似于master的私有Spec Repo，先在远程仓库创建一个工程JCLiveIOSSpecs，然后执行创建私有Spec Repo命令： 12#pod repo add [Pri">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2017-11-30T09:04:51.000Z">
+<meta property="og:updated_time" content="2018-01-29T02:32:47.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="私有Pod私有库">
 <meta name="twitter:description" content="1、创建私有Spec RepoSpec Repo是什么？它是所有的Pods的一个索引，就是一个容器，所有公开的Pods都在这个里面，它实际是一个Git仓库remote端在GitHub上，所以想要创建pod私有库，需要创建类似于master的私有Spec Repo，先在远程仓库创建一个工程JCLiveIOSSpecs，然后执行创建私有Spec Repo命令： 12#pod repo add [Pri">
@@ -382,6 +382,7 @@
   <figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line">target :&apos;target1&apos; do</div><div class="line">  platform :ios</div><div class="line">  pod &apos;SDWebimage&apos;, &apos;~&gt; 1.1.1&apos;</div><div class="line">end</div><div class="line"></div><div class="line">target :&apos;target2&apos; do</div><div class="line">  platform :ios ,&apos;7.0&apos;</div><div class="line">  pod &apos;AFNetworking&apos;, &apos;~&gt; 2.3.1&apos;</div><div class="line">end</div><div class="line">其中，do/end作为开始和结束标识符。</div></pre></td></tr></table></figure>
 </li>
 </ul>
+<h3 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h3><p><a href="http://blog.csdn.net/daiyelang/article/details/68488760" target="_blank" rel="external">Cocoapods使用私有库中遇到的坑</a></p>
 
       
     </div>
@@ -495,7 +496,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-count">5</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
@@ -542,7 +543,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1、创建私有Spec-Repo"><span class="nav-number">1.</span> <span class="nav-text">1、创建私有Spec Repo</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2、创建Pod项目工程文件"><span class="nav-number">2.</span> <span class="nav-text">2、创建Pod项目工程文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3、创建私有库pod组件"><span class="nav-number">3.</span> <span class="nav-text">3、创建私有库pod组件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4、编辑podspec文件"><span class="nav-number">4.</span> <span class="nav-text">4、编辑podspec文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5、提交pod组件到Spec-Repo中"><span class="nav-number">5.</span> <span class="nav-text">5、提交pod组件到Spec Repo中</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6、项目中导入pod私有库组件"><span class="nav-number">6.</span> <span class="nav-text">6、项目中导入pod私有库组件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7、更新本地cocoapods的spec资源配置信息"><span class="nav-number">7.</span> <span class="nav-text">7、更新本地cocoapods的spec资源配置信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8、Podfile文件中use-frameworks"><span class="nav-number">8.</span> <span class="nav-text">8、Podfile文件中use_frameworks!</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9、Podfile和target"><span class="nav-number">9.</span> <span class="nav-text">9、Podfile和target</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1、创建私有Spec-Repo"><span class="nav-number">1.</span> <span class="nav-text">1、创建私有Spec Repo</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2、创建Pod项目工程文件"><span class="nav-number">2.</span> <span class="nav-text">2、创建Pod项目工程文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3、创建私有库pod组件"><span class="nav-number">3.</span> <span class="nav-text">3、创建私有库pod组件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4、编辑podspec文件"><span class="nav-number">4.</span> <span class="nav-text">4、编辑podspec文件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5、提交pod组件到Spec-Repo中"><span class="nav-number">5.</span> <span class="nav-text">5、提交pod组件到Spec Repo中</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6、项目中导入pod私有库组件"><span class="nav-number">6.</span> <span class="nav-text">6、项目中导入pod私有库组件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7、更新本地cocoapods的spec资源配置信息"><span class="nav-number">7.</span> <span class="nav-text">7、更新本地cocoapods的spec资源配置信息</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8、Podfile文件中use-frameworks"><span class="nav-number">8.</span> <span class="nav-text">8、Podfile文件中use_frameworks!</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9、Podfile和target"><span class="nav-number">9.</span> <span class="nav-text">9、Podfile和target</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考"><span class="nav-number">10.</span> <span class="nav-text">参考</span></a></li></ol></div>
             
 
           </div>
@@ -562,7 +563,7 @@
 
     <footer id="footer" class="footer">
       <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2017</span>
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
   <span class="with-love">
     <i class="fa fa-user"></i>
   </span>
