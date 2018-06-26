@@ -1,0 +1,819 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.3" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.3">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.3">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.3" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="在 初试 MDL 这篇文章中，认识了 MDL 文件结构、程序运行以及编译原理，下面就来讲讲 MDL 设计思路以及如何编写各部分。 设计思路MDL 如何开始，并能使初设很容易转换成高层次的设计：首先：  定义使用者在熟悉的术语中操作的对象类型 列出对象的属性 定义对象的放置和操作 其他需要的功能  进阶：  确定用于表示应用程序对象的 MicroStation 元素 确定必须从用户那里收集哪些设置">
+<meta property="og:type" content="article">
+<meta property="og:title" content="MDL之编程">
+<meta property="og:url" content="https://github.com/muhuashanjin/2018/06/26/2018-06-26-MDL之编程/index.html">
+<meta property="og:site_name" content="The Blog Of Mei Xia">
+<meta property="og:description" content="在 初试 MDL 这篇文章中，认识了 MDL 文件结构、程序运行以及编译原理，下面就来讲讲 MDL 设计思路以及如何编写各部分。 设计思路MDL 如何开始，并能使初设很容易转换成高层次的设计：首先：  定义使用者在熟悉的术语中操作的对象类型 列出对象的属性 定义对象的放置和操作 其他需要的功能  进阶：  确定用于表示应用程序对象的 MicroStation 元素 确定必须从用户那里收集哪些设置">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://7xw5qd.com1.z0.glb.clouddn.com/mdl2_dialogboxrsc.png">
+<meta property="og:image" content="http://7xw5qd.com1.z0.glb.clouddn.com/mdl2_comitem.png">
+<meta property="og:image" content="http://7xw5qd.com1.z0.glb.clouddn.com/mdl2_IconCmdFrameRsc.png">
+<meta property="og:image" content="http://7xw5qd.com1.z0.glb.clouddn.com/mdl2_item.png">
+<meta property="og:image" content="http://7xw5qd.com1.z0.glb.clouddn.com/mdl2_tbtn.png">
+<meta property="og:image" content="http://7xw5qd.com1.z0.glb.clouddn.com/mdl2_pargramrun.png">
+<meta property="og:updated_time" content="2018-06-26T12:25:20.456Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="MDL之编程">
+<meta name="twitter:description" content="在 初试 MDL 这篇文章中，认识了 MDL 文件结构、程序运行以及编译原理，下面就来讲讲 MDL 设计思路以及如何编写各部分。 设计思路MDL 如何开始，并能使初设很容易转换成高层次的设计：首先：  定义使用者在熟悉的术语中操作的对象类型 列出对象的属性 定义对象的放置和操作 其他需要的功能  进阶：  确定用于表示应用程序对象的 MicroStation 元素 确定必须从用户那里收集哪些设置">
+<meta name="twitter:image" content="http://7xw5qd.com1.z0.glb.clouddn.com/mdl2_dialogboxrsc.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.3',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="https://github.com/muhuashanjin/2018/06/26/2018-06-26-MDL之编程/"/>
+
+
+
+
+
+  <title>MDL之编程 | The Blog Of Mei Xia</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">The Blog Of Mei Xia</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="https://github.com/muhuashanjin/2018/06/26/2018-06-26-MDL之编程/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Mei Xia">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="The Blog Of Mei Xia">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">MDL之编程</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-06-26T00:00:00+08:00">
+                2018-06-26
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>在 <a href="https://muhuashanjin.github.io/2018/06/22/2018-06-22-MDL%E4%B9%8B%E5%88%9D%E8%AF%95/" target="_blank" rel="external">初试 MDL</a> 这篇文章中，认识了 MDL 文件结构、程序运行以及编译原理，下面就来讲讲 MDL 设计思路以及如何编写各部分。</p>
+<h2 id="设计思路"><a href="#设计思路" class="headerlink" title="设计思路"></a>设计思路</h2><h4 id="MDL-如何开始，并能使初设很容易转换成高层次的设计："><a href="#MDL-如何开始，并能使初设很容易转换成高层次的设计：" class="headerlink" title="MDL 如何开始，并能使初设很容易转换成高层次的设计："></a>MDL 如何开始，并能使初设很容易转换成高层次的设计：</h4><p>首先：</p>
+<ol>
+<li>定义使用者在熟悉的术语中操作的对象类型</li>
+<li>列出对象的属性</li>
+<li>定义对象的放置和操作</li>
+<li>其他需要的功能</li>
+</ol>
+<p>进阶：</p>
+<ol>
+<li>确定用于表示应用程序对象的 MicroStation 元素</li>
+<li>确定必须从用户那里收集哪些设置</li>
+<li>设计元素放置和操作工具</li>
+<li>用于其他功能的设计工具和设置框</li>
+</ol>
+<p>以上就是在编程应用程序的设计细节之前，需要首先拥有的功能规范，描述应用程序要执行的操作。</p>
+<h4 id="以下就是实际编程中-MDL-初始化逻辑："><a href="#以下就是实际编程中-MDL-初始化逻辑：" class="headerlink" title="以下就是实际编程中 MDL 初始化逻辑："></a>以下就是实际编程中 MDL 初始化逻辑：</h4><ol>
+<li><p>为对话框、命令表和消息列表打开资源文件：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">RscFileHandle   rfHandle;</div><div class="line">mdlResource_openFile (&amp;rfHandle, NULL, FALSE);</div></pre></td></tr></table></figure>
+</li>
+<li><p>注册消息列表 id 以用于操作的提示或错误：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">//MSGLIST_commands、MSGLIST_prompts 分别为命令ID、命令提示ID</div><div class="line">mdlState_registerStringIds (MSGLIST_commands, MSGLIST_prompts);</div></pre></td></tr></table></figure>
+</li>
+<li><p>加载命令表：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">mdlParse_loadCommandTable (NULL);</div></pre></td></tr></table></figure>
+</li>
+<li><p>为系统事件（比如：【SYSTEM_UNLOAD_PROGRAM：程序尚未加载】、【SYSTEM_RELOAD_PROGRAM：程序重新加载】）设置用户的 hook 函数：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">// 在 SYSTEM_UNLOAD_PROGRAM 卸载时在 unloadFunction 函数中做一些事情，比如存储这是输入的值以便下次使用，不用再次输入，而 unloadFunction 就是 hook 函数，用于在指定的事件发生时触发自定义的操作</div><div class="line">mdlSystem_setFunction (SYSTEM_UNLOAD_PROGRAM, unloadFunction);</div></pre></td></tr></table></figure>
+</li>
+<li><p>使用 MicroStation 对话框管理器注册对话框 hook 函数：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line">//注册对话框 hook 函数组，并关联hook函数ID和函数地址</div><div class="line">mdlDialog_hookPublish (sizeof(uHooks)/sizeof(DialogHookInfo), uHooks);</div><div class="line"></div><div class="line">// 将hook函数 myLevel_comboHook  和 对话框ID为 HOOKITEMID_MyLevelCombo的关联起来，以监测这个对话框条目生命周期的事件</div><div class="line">DialogHookInfo uHooks[] =</div><div class="line">&#123;</div><div class="line">	&#123;HOOKITEMID_MyLevelCombo,	   (PFDialogHook)myLevel_comboHook 	&#125;,</div><div class="line">&#125;</div><div class="line"></div><div class="line">//针对对话框条目比如：初始化、创建生成、清除等等进行监测，并触发相应的操作</div><div class="line">void myLevel_comboHook (DialogItemMessage *dimP)</div><div class="line">&#123;</div><div class="line">	RawItemHdr *riP = dimP-&gt;dialogItemP-&gt;rawItemP;</div><div class="line">	dimP-&gt;msgUnderstood	= TRUE;</div><div class="line">	switch (dimP-&gt;messageType)</div><div class="line">	&#123;</div><div class="line">	case DITEM_MESSAGE_CREATE:</div><div class="line">		&#123;</div><div class="line">			//对话框条目生成时触发的操作</div><div class="line">			break;</div><div class="line">		&#125;</div><div class="line">	case DITEM_MESSAGE_DESTROY:</div><div class="line">		&#123;</div><div class="line">             //对话框条目清除时触发的操作</div><div class="line">			break;</div><div class="line">		&#125;</div><div class="line">	.......</div><div class="line">	default:</div><div class="line">         //对话框条目其他情况默认触发的操作</div><div class="line">		break;</div><div class="line">	&#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+<li><p>打开应用程序的初始对话框，初始化完成后，主函数返回，应用程序等待它的对话框 hook 函数、用户 hook 函数或命令函数被调用：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">//其中 DIALOGID_Pal 为对话框资源文件中定义的对话框ID</div><div class="line">mdlDialog_open (NULL, DIALOGID_Pal);</div></pre></td></tr></table></figure>
+</li>
+<li><p>构建单元库，用于需要一组预定义图符的应用程序表示系统内置的单元库中的对象，而这个单元库由开发人员生成并打包成应用程序</p>
+</li>
+<li><p>创建命令表，注册命令表中的 command，并将命令ID与命令触发的方法对应：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">Private MdlCommandNumber  commandNumbers [] =</div><div class="line">	&#123;</div><div class="line">		&#123;createALine,           CMD_HELLOWORLD_CREATE_LINE&#125;,</div><div class="line">		&#123;createAComplexShape,	CMD_HELLOWORLD_CREATE_COMPLEXSHAPE&#125;,</div><div class="line">		&#123;createAProjectedSolid,	CMD_HELLOWORLD_CREATE_PROJECTEDSOLID&#125;,</div><div class="line">		&#123;createABsplineSurface, CMD_HELLOWORLD_CREATE_BSPLINESURFACE&#125;,</div><div class="line">		&#123;connectHitPoints,      CMD_HELLOWORLD_CONNECT_HITPOINTS&#125;,</div><div class="line">		&#123;turnOnViewTransient,   CMD_HELLOWORLD_TRANSIENT_ON&#125;,</div><div class="line">		&#123;turnOffViewTransient,  CMD_HELLOWORLD_TRANSIENT_OFF&#125;,</div><div class="line">		0</div><div class="line">	&#125;;</div><div class="line">mdlSystem_registerCommandNumbers (commandNumbers);</div></pre></td></tr></table></figure>
+</li>
+<li><p>编写原始命令逻辑，编写应用程序的所有原始命令例程来处理元素放置和操纵。每一个原始的命令都需要设置状态函数来处理事件，比如数据点、重置和显示动态——当它被拖过屏幕时显示一个元素，有时被称为“弹性连接”。</p>
+</li>
+<li><p>为直接命令和实用命令编写逻辑，其中直接命令用于修改内部设置的值，比如：精确绘图快速旋转 RQ，但对话框是一种更优雅的方式来设置内部变量的值，因此编写直接命令的需求减少了。而实用命令不需要来自用户的交互输入，并且不只是设置应用程序变量，还有很多状态控制函数，比如会经常使用的：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">//根据事件规定使用的函数,下面的意思是动态绘制状态时调用函数 line_drawLine 进行动态绘制直线</div><div class="line">mdlState_setFunction (STATE_COMPLEX_DYNAMICS, line_drawLine);</div></pre></td></tr></table></figure>
+</li>
+<li><p>构建工具栏，工具栏是开始命令的图形图标。当用户单击一个工具时，就会启动适当的命令。如果向用户提供命令，MicroStation 类型的应用程序至少有一个工具箱。在开发的初始阶段，创建工具箱并不是绝对必要的，因为可以在命令行键入命令。然而，当您可以单击一个图标以启动一个命令而不是在命令行键入它时，测试就容易多了。</p>
+</li>
+<li><p>构建对话框，对话框显示并收集数据</p>
+</li>
+<li><p>创建在线帮助的文档</p>
+</li>
+</ol>
+<h2 id="编程实践"><a href="#编程实践" class="headerlink" title="编程实践"></a>编程实践</h2><p>要实现【 MDL 初始化逻辑】里的步骤，主要需要编写以下部分：</p>
+<ul>
+<li>消息表（xxxmsg.r）</li>
+<li>命令表（xxxcmd.r）</li>
+<li>对话框（xxx.r）</li>
+<li>源码（xxx.cpp）</li>
+<li>编译规则（xxx.mke）</li>
+</ul>
+<p>接下来如何编写以上文件，根据 <a href="https://muhuashanjin.github.io/2018/06/22/2018-06-22-MDL%E4%B9%8B%E5%88%9D%E8%AF%95/" target="_blank" rel="external">初试 MDL</a> 这篇文章中的示例程序 adrwdemo 的绘制直线的功能来讲解：</p>
+<h4 id="消息表"><a href="#消息表" class="headerlink" title="消息表"></a>消息表</h4><p>消息列表包含应用程序使用的消息。列表中的每条消息都有相应的消息编号。这些消息号必须是唯一的，并以升序的顺序出现在列表中。MessageList的资源标识符（称为resources ID）与消息编号相结合，惟一地标识列表中的给定消息。</p>
+<p>消息表结构的语法如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div></pre></td><td class="code"><pre><div class="line">Messagelist &lt;messageid&gt; =</div><div class="line">&#123;</div><div class="line">    &#123;</div><div class="line">        &#123;&lt;messagenumber&gt;， &quot;&lt;message&gt;&quot;&#125;，</div><div class="line">        ......</div><div class="line">    &#125;</div><div class="line">&#125;</div><div class="line">结构字段解析：</div><div class="line">messageid：识别这个表的唯一编号</div><div class="line">messagenumber：唯一的编号且必须以升序排列</div><div class="line">message：包含信息的字符串</div><div class="line">ps：messageid和messagenumber结合起来，可以唯一地识别列表中的信息</div></pre></td></tr></table></figure>
+<p>根据语法在 adrwdemomsg.r 编写如下代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line">//资源相关类是在系统头文件rscdefs.h中定义，比如：MessageList</div><div class="line">#include &quot;rscdefs.h&quot;  </div><div class="line">#include &quot;adrwdemo.h&quot;</div><div class="line"></div><div class="line">MessageList MSGLIST_commands =</div><div class="line">&#123;</div><div class="line">    &#123;</div><div class="line">        &#123;MSG_cmdLine, &quot;Line&quot;&#125;,</div><div class="line">    &#125;</div><div class="line">&#125;;</div><div class="line"></div><div class="line">MessageList MSGLIST_prompts =</div><div class="line">&#123;</div><div class="line">    &#123;</div><div class="line">        &#123;MSG_promptEnterPoint, &quot;Enter point&quot;&#125;,</div><div class="line">    &#125;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p>在 MS 操作时界面左下角的提示框就会显示【Line -&gt;Enter point】，提示需要在视图中输入一个数据点。</p>
+<h4 id="命令表"><a href="#命令表" class="headerlink" title="命令表"></a>命令表</h4><p>命令表定义了应用程序命令的语法。命令表是分层的，其中一个主表向下分支到子命令树中。一个应用程序的命令表是在一个资源源文件中定义的，它被编译成产生两个输出文件，一个是用来解析和验证键的，另一个是唯一标识每个命令的无符号整数的列表。</p>
+<p>命令表结构的语法如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div></pre></td><td class="code"><pre><div class="line">Table &lt;tabteid&gt;=</div><div class="line">&#123;</div><div class="line">&lt;number&gt;， &lt;subtableid&gt;， &lt;commandclass&gt;， &lt;options&gt;， &lt;commandword&gt;</div><div class="line">&#125;</div><div class="line">结构字段解析：</div><div class="line">tableid：是一个32位无符号整型数。主或根命令表必须赋给一个值为1的</div><div class="line">tableid。</div><div class="line"></div><div class="line">number： 定义命令号。</div><div class="line"></div><div class="line">subtableid：指定命令中下一个词的子表。如果没有子表， 则使用 #define CT_NONE。</div><div class="line"></div><div class="line">commandclass：指定命令类别，命令类别是预先定义的，如 INHERIT、PLACEMENT......(INHERIT采用最后一个命令类别，PLACEMENT对于基本命令是最合适的命令类别，DELETE ELEMENT命令属于类操纵，但是DELETE CELL命令位于CELLLIB类中)</div><div class="line"></div><div class="line">options：可用的选项是NONE，DEF，REQ，TRY和CMDSTR(n)。这些选项可以用OR(│ )相连。例如DEF │ TRY(n)。</div><div class="line">DEF (缺省)， 给特定表指定缺省值。</div><div class="line">REQ (要求)，告诉命令语法分析程序必须从子表中选择。</div><div class="line">TRY (试图分析)，这个选项将试图分析子表中的一个值。如果这个值不匹配，则把不匹配部分传递给应用程序。例如：ACTIVESTYLE 3， 这里的3被传递给应用程序。</div><div class="line">CMDSTR(n) 每次执行命令时将显示信息表(Messagelist)中的字符串n。</div><div class="line"></div><div class="line">commandword：命令输入字符串</div></pre></td></tr></table></figure>
+<p>根据语法在 adrwdemocmd.r 编写如下代码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div></pre></td><td class="code"><pre><div class="line">//避免生成的命令与MicroStation内置命令重复</div><div class="line">#pragma		suppressREQCmds</div><div class="line"></div><div class="line">#include 	&lt;rscdefs.h&gt;</div><div class="line">//命令表结项选项相关在系统头文件cmdclass.h中定义</div><div class="line">#include 	&lt;cmdclass.h&gt;</div><div class="line">#include	&quot;adrwdemo.h&quot;</div><div class="line"></div><div class="line">//宏定义命令表 ID</div><div class="line">#define CT_NONE 		    0</div><div class="line">#define CT_MAIN 		    1</div><div class="line">#define CT_DEMO			    2</div><div class="line"></div><div class="line">Table CT_MAIN =</div><div class="line">&#123;</div><div class="line">    &#123; 1, CT_DEMO, PLACEMENT, REQ, &quot;DEMO&quot;&#125;</div><div class="line">&#125;;</div><div class="line"></div><div class="line">Table CT_DEMO =</div><div class="line">&#123;</div><div class="line">    &#123; 1, CT_NONE, INHERIT, NONE|CMDSTR(MSG_cmdLine), &quot;LINE&quot;&#125;</div><div class="line">    ......</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p> 在 MS 中顶部菜单栏【实用工具 】-【命令行】键入画线命令【DEMO LINE】，就能启动画线的功能</p>
+<h4 id="对话框"><a href="#对话框" class="headerlink" title="对话框"></a>对话框</h4><p>工具栏和对话框的GUI相关信息都是存储在资源文件中，通过编写资源文件来控制列表条目、条目资源显示的位置和方式、将被发送到条目hook函数的消息列表以及相关对话框管理器功能的列表。标准对话框条目有：ColorPicker, Generic, GroupBox, IconCmdFrame, Label, LevelMap, ListBox, MenuBar, MLText, OptionButton, PushButton, ScrollBar, Text, ToggleButton, Sash, Scale, RadioButton, MenuBarX, LevelPicker, ToolBox, IconCmdX, ButtonGroup、IconCmdFrameX，这里只列举示例程序中用到的条目类型：</p>
+<blockquote>
+<p>对话框 </p>
+</blockquote>
+<p><img src="http://7xw5qd.com1.z0.glb.clouddn.com/mdl2_dialogboxrsc.png" alt="dl2_dialogboxrs"></p>
+<p>上图为对话框，其数据结构：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div></pre></td><td class="code"><pre><div class="line">typedef struct dialogboxrsc </div><div class="line">&#123; </div><div class="line">   ULong   attributes;     /* dialog attributes */ </div><div class="line">   int     width;          /* dialog coords */ </div><div class="line">   int     height;         /* dialog coords */ </div><div class="line">   ULong   helpInfo;       /* help for entire dialog */ </div><div class="line">   char    *helpSource;    /* help task ID */ </div><div class="line">   long    dialogHookId;   /* dialog hook ID */ </div><div class="line">   long    parentDialogId; /* to inform when destroyed */ </div><div class="line">#if defined (resource) </div><div class="line">   char    label[];          /* dialog label (title) */ </div><div class="line">   DialogItemRsc itemList[]; /* array of dialog items */ </div><div class="line">#else </div><div class="line">   long    labelLength;      /* length of label (title) */ </div><div class="line">   char    label[1];         /* dialog label (title) */ </div><div class="line">#endif </div><div class="line">&#125; DialogBoxRsc; </div><div class="line">结构字段解析：</div><div class="line">attributes:对话框属性，枚举如下：</div><div class="line">DIALOGATTR_DEFAULT：默认的对话框类型，未设置属性</div><div class="line">DIALOGATTR_GROWABLE：对话框可重定尺寸，不受width、height影响</div><div class="line">DIALOGATTR_NORIGHTICONS：对话框右上角没有最小化、最大化按钮只剩关闭按钮DIALOGATTR_MODAL： 模态框，对话框右上角一个操作按钮都没有</div><div class="line">DIALOGATTR_UNCLOSEABLE：不能关闭对话框</div><div class="line">DIAIOGATTR_SINKABlE：对话框可送到视图窗口后面</div><div class="line">DIALOGATTR_NOAUTOSWITCH：键盘焦聚不能自动打开另一个窗口的开关</div><div class="line">DIALOGATTR_CLOSEONNEW：当打开一个新设计文件时关闭对话框</div><div class="line">DIALOGATTR_ALWAYSSETSTATE：当用户与条目交互时设置条目的状态</div><div class="line">......</div><div class="line"></div><div class="line">width、height：对话框的宽、高由定义在&lt;dlogbox.h&gt;中的三个常量指定：</div><div class="line">#define DCOORD_RESOLUTION 12</div><div class="line">#define XC (DCOORD_RESOLUTION／ 2)</div><div class="line">#define YC DCOORD_RESOLUTON</div><div class="line">常量DCOORD_RESOLUTION被规定为12个象素。XC是一个字符的宽度， 是字符高的一半。YC是一个</div><div class="line">字符的高。</div><div class="line"></div><div class="line">helpinfo、helpSource：为这个应用定义帮助功能。如果不存在帮助，就分别设置</div><div class="line">为NOHELP和MHELPo</div><div class="line"></div><div class="line">dialogHookId：hook函数ID，监测这个对话框条目生命周期的事件</div><div class="line"></div><div class="line">parentDialogId：当一个对话框需要启动另一个对话框时，指定父对话框的ID。然后，这个字段用于确定当子对话框被销毁时要通知哪个对话框。如果对话框没有从另一个对话框中启动，或者父对话框不需要被告知子对话框的销毁情况，请使用NOPARENTID。</div><div class="line"></div><div class="line">label：对话框标题</div><div class="line"></div><div class="line">itemList：对话框列通用条目DialogItemRsc的数组</div></pre></td></tr></table></figure>
+<blockquote>
+<p>对话框通用条目</p>
+</blockquote>
+<p><img src="http://7xw5qd.com1.z0.glb.clouddn.com/mdl2_comitem.png" alt="mdl2_comitem"></p>
+<p>红色方框内为对话框通用条目，其数据结构：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div></pre></td><td class="code"><pre><div class="line">typedef struct dialogitemrsc </div><div class="line">&#123; </div><div class="line">   Sextent extent;      /* item area, origin (in dialog coords), if </div><div class="line">                           width/height is zero, use dimensions </div><div class="line">                           specified in item */ </div><div class="line">   long    type;        /* item type */ </div><div class="line">   long    id;          /* item ID */ </div><div class="line">   byte    attributes;  /* item attributes */ </div><div class="line">   long    itemArg;     /* item argument */ </div><div class="line">#if defined (resource) </div><div class="line">   char    label[];     /* item label */ </div><div class="line">   char    auxInfo[];   /* item auxiliary information */ </div><div class="line">#else </div><div class="line">   int     labelLength; /* length of item label */ </div><div class="line">   char    label[1];    /* item label */ </div><div class="line">#endif </div><div class="line">&#125; DialogItemRsc; </div><div class="line">结构字段解析：</div><div class="line">extent：对话框条目的坐标和宽高，Sextent定义如下：</div><div class="line">typedef struct spoint2d</div><div class="line">&#123;</div><div class="line">    short x；</div><div class="line">    short y；</div><div class="line">&#125;Spoint2d， SPoint2d；</div><div class="line">typedef struct extent</div><div class="line">&#123;</div><div class="line">    SPoint2d origin； ／ * upper left *／</div><div class="line">    short width；</div><div class="line">    short height；</div><div class="line">&#125;Sextent；</div><div class="line"></div><div class="line">type：指定要创建的条目的类型，枚举类型有：ColorPicker, Generic, GroupBox, IconCmdFrame, Label, LevelMap, ListBox, MenuBar, MLText, OptionButton, PushButton, ScrollBar, Text, ToggleButton, Sash, Scale, RadioButton, MenuBarX, LevelPicker, ToolBox, IconCmdX, ButtonGroup、IconCmdFrameX. </div><div class="line"></div><div class="line">id：指定要加载的条目实例的资源ID</div><div class="line"></div><div class="line">attributes：指定项目的初始状态，启动【ON】允许对物品进行操作或禁用。一个禁用的项目被调用，不能接受输入焦点，并且忽略用户操作。大多数项目都应该启用【ON】。</div><div class="line"></div><div class="line">itemArg：为不同的项目类型包含不同的值。比如：label 条目用这个字段指定使用的理由，大多数条目当前没有使用这个字段</div><div class="line"></div><div class="line">label：表示一个字符串，它允许盖特定对话框中条目的标签。默认标签在每个条目资源中定义。在对话框中指定的标签覆盖条目资源中指定的任何标签。该字段允许使用条目的已定义行为，但以不同的方式标记条目，标签的使用取决于项目类型。</div><div class="line"></div><div class="line">auxInfo：包含额外的item-specific信息。实际该字段仅用于覆盖条目资源中定义的接入【变量】字符串，使条目能够按照项目资源中定义的方式进行操作，但是会影响到不同的应用程序变量。</div></pre></td></tr></table></figure>
+<blockquote>
+<p>图标命令框</p>
+</blockquote>
+<p><img src="http://7xw5qd.com1.z0.glb.clouddn.com/mdl2_IconCmdFrameRsc.png" alt="mdl2_IconCmdFrameRsc"></p>
+<p>红色方框内为图标命令框，其数据结构：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div></pre></td><td class="code"><pre><div class="line">typedef struct ditem_iconcmdframersc </div><div class="line">&#123; </div><div class="line">	int nColumns; </div><div class="line">	int nRows; </div><div class="line">	ULong helpInfo; </div><div class="line">	ULong helpSource; </div><div class="line">#if defined (resource) </div><div class="line">	char label[]; </div><div class="line">	DialogItemSpec iconPieces[]; </div><div class="line">#else </div><div class="line">	long labelLength; </div><div class="line">	char label[1]; </div><div class="line">#endif </div><div class="line">&#125; DItem_IconCmdFrameRsc; </div><div class="line">结构字段解析：</div><div class="line">nColumns、nRows：图标命令框中图标的列数和行数</div><div class="line"></div><div class="line">label：指定图标命令框架的标题。对话框标题将被设置为这个字符串的值</div><div class="line"></div><div class="line">iconPieces：指定图标命令框架的内容。iconPieces是一组对话框的成员。图标成员的类型字段可以是IconCmd或IconCmdPalette。iconPieces成员的id字段表明ditemiconcmdrsc或ditemiconcmdpalettersc的实例加载</div></pre></td></tr></table></figure>
+<blockquote>
+<p>图标命令框条目</p>
+</blockquote>
+<p><img src="http://7xw5qd.com1.z0.glb.clouddn.com/mdl2_item.png" alt="mdl2_item"></p>
+<p>红色方框内为图标命令框条目，其数据结构：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line">typedef struct ditem_iconcmdrsc </div><div class="line">&#123; </div><div class="line">	ULong helpInfo; </div><div class="line">#if defined (resource) </div><div class="line">	char helpTaskId[]; </div><div class="line">	ULong attributes; </div><div class="line">	ULong commandNumber; </div><div class="line">	char commandTaskId[]; </div><div class="line">	char unparsed[] </div><div class="line">	char enabledAccessStr[]; </div><div class="line">	DialogItemRsc iconItems[]; </div><div class="line">#else </div><div class="line">	long helpTaskLen; </div><div class="line">	char helpTaskId[1]; </div><div class="line">#endif </div><div class="line">&#125; DItem_IconCmdRsc;</div><div class="line">结构字段解析：</div><div class="line">attributes：指定图标命令的属性。这个字段通常为0，是通过将属性表中的常量与逻辑运算符|组合在一起构造的，有两个枚举值：</div><div class="line">ICONCMDATTR_DONTSINGLESHOT：表示这个图标命令不能双击进入单发操作模式。默认情况下，双击图标会导致微站点为选定的图标输入单发模式。</div><div class="line">ICONCMDATTR_DONTAUTOSELECT：表示当与图标相关联的命令被排队到 MicroStation 时，这个图标资源不应该被高亮显示（选中）。</div><div class="line"></div><div class="line">commandTaskId：指定将要执行与命令编号相关联的命令的任务。</div><div class="line">将comandTaskId设置为OTASKID，它被定义为空字符串，表明拥有（最初创建）对话框的任务应该执行该命令。</div><div class="line">将comandTaskId设置为MTASKID，它被定义为“+”，表明应该使用微站来执行该命令。（命令号必须是在cmdlist.h中定义的一个微站命令号。）</div><div class="line">如果您需要指定一个与所有者或 MicroStation 不同的任务，请将任务名称放在这里。</div><div class="line"></div><div class="line">enabledAccessStr：如果未使用，设置为&quot;&quot;。</div><div class="line"></div><div class="line">iconItems：一个DialogItemRsc数组和与图标命令关联的弹出对话框项列表。创建此列表的方式与创建普通对话框项列表的方式相同，请参照“DialogBoxRsc Structure”和“DialogBoxRsc Structure”。只有包含在图标命令面板中的图标命令才能有项目列表。图标命令帧不会显示弹出式项目列表。当在图标命令项列表规范中使用时，DialogItemRsc的区段成员指定相对于父图标命令面板左下角的位置，而不是包含图标命令的对话框左上角。</div></pre></td></tr></table></figure>
+<blockquote>
+<p>开关状态按钮</p>
+</blockquote>
+<p><img src="http://7xw5qd.com1.z0.glb.clouddn.com/mdl2_tbtn.png" alt="mdl2_tbtn"></p>
+<p>红色方框内开关状态按钮，其数据结构：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div></pre></td><td class="code"><pre><div class="line">typedef struct ditem_togglebuttonrsc </div><div class="line">&#123; </div><div class="line">	ULong commandNumber; </div><div class="line">	ULong commandSource; </div><div class="line">	long synonymsId; </div><div class="line">	ULong helpInfo; </div><div class="line">	ULong helpSource; </div><div class="line">	long itemHookId; </div><div class="line">	long itemHookArg; </div><div class="line">	ULong mask; </div><div class="line">	char invertFlag; </div><div class="line">#if defined (resource) </div><div class="line">	char label[]; </div><div class="line">	char accessStr[]; </div><div class="line">#else </div><div class="line">	long labelLength; </div><div class="line">	char label[1]; </div><div class="line">#endif </div><div class="line">&#125; DItem_ToggleButtonRsc;</div><div class="line">结构字段解析：</div><div class="line">SynonymsId：定义在对话条目被修改时与所做的修改相对应的对话条目。最好的例子是</div><div class="line">ColorPicker对话条目， 它有SynonysmsId， 如Text Item。在ColorPicker改变时， Text Item修改为ColorPicker选择的相应的颜色编号。</div><div class="line"></div><div class="line">itemHookId：定义hook函数的ID。如果不用hook函数， 则在这个字段中指定为NOH00K。hook函数</div><div class="line">允许我们修改对话框和条目的缺省动作。</div><div class="line"></div><div class="line">itemHookArg：为hook函数规定变量。如不需要变量， 则在这个字段中使用NOARG。</div><div class="line"></div><div class="line">accessStr：对话框条目控制的变量。例如， 我们想使对话框中的任何变化都反映在变量</div><div class="line">adrwdemoInfo.showAxes中， 所以， accessStr将是&quot;adrwdemoInfo.showAxes&quot;。对话框能识别这个变量，因为它已被说明。</div></pre></td></tr></table></figure>
+<blockquote>
+<p>命令列表条目</p>
+</blockquote>
+<p>CmdItemListRsc 基于命令，（命令编号被用作ID）CmdItemListRsc 让 MicroStation 无论如何调用该命令，都可以找到当前命令的工具设置，以此解决由于工具设置项列表与图标相关联，（而不是图标执行的命令），只有当图标在内存中（显示）时才能找到工具设置。在检查 IconCmdRsc 资源中的条目列表之前，MicroStation 现在寻就会找与当前命令相关联的 CmdItemListRsc。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div></pre></td><td class="code"><pre><div class="line">CmdItemListRsc &lt;commandID&gt; = </div><div class="line">&#123;&#123; </div><div class="line">    DialogItemRsc itemList[];</div><div class="line">&#125;&#125;;</div></pre></td></tr></table></figure>
+<blockquote>
+<p>对话框管理访问字符串</p>
+</blockquote>
+<p>假设开发按钮的字段 label 为变量 adrwdemoInfo.showAxe，如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div></pre></td><td class="code"><pre><div class="line">/*</div><div class="line">开关状态按钮</div><div class="line">*/</div><div class="line">DItem_ToggleButtonRsc TOGGLEID_ShowAxes =</div><div class="line">&#123;</div><div class="line">    NOCMD, MCMD, NOSYNONYM, NOHELP, MCMD, NOHOOK, NOARG,</div><div class="line">    NOMASK, NOINVERT, TOGGLE_ShowAxes, &quot;adrwdemoInfo.showAxes&quot;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<p>因为访问字符串为检查和修改对话框条目定义变量、结构和结构的指针，所以必须通过发布变量、结构或指针， 使对话框条目能够管理我们的数据。实现分为两步：</p>
+<ul>
+<li><p>xxxtyp.mt中定义结构和联合的说明，这个文件含有包含文件和publishStructures语句，publishStructures 语句识别在资源源文件中定义的结构。这个结构不能含有动态说明(分配空间的那些说明)或可执行语句:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div></pre></td><td class="code"><pre><div class="line">#include    &quot;adrwdemo.h&quot;</div><div class="line">publishStructures (adrwdemoinfo);</div></pre></td></tr></table></figure>
+<p>以此来发布定义在 adrwdemo.h 中的用于设置是否启用结构平面或者显示坐标轴的全局数据结构体：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">typedef struct adrwdemoinfo</div><div class="line">&#123;</div><div class="line">	int     showAxes;</div><div class="line">	int     useCPlane;</div><div class="line">&#125; AdrwdemoInfo;</div></pre></td></tr></table></figure>
+</li>
+<li><p>定义符号集，符号集是一个指向内存区域的指针。在这个内存区域内对话条目可以找到应用的变量、结构和指针，为了建立并公布要存取的结构 AdrwdemoInfo，在 .cpp 程序入口函数中编写如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div></pre></td><td class="code"><pre><div class="line">//使setP符号集初始化，可见标志被分配给每一个符号。在搜寻过程中检查可见标志来决定符号集是否包括在搜寻中。当这些符号用于对话框时， 我们规定VISIBILITY_DIALOG_BOX。这些符号如果用于计算器或预处理器，我们则指定VISIBILITY_CALCVLATOR。如果符号同时用于二者，则规定(VISIBILITY_DIALOG_BOX＼ VISIBILITY_CALULATOR)。若符号与调试程序一起使用， 则我们规定VISIBILITY_DBUGGER。</div><div class="line">SymbolSet  *setP = mdlCExpression_initializeSet (VISIBILITY_DIALOG_BOX, 0, 0);</div><div class="line">//发布要使用的符号</div><div class="line">mdlDialog_publishComplexVariable (setP, &quot;adrwdemoinfo&quot;,</div><div class="line">		&quot;adrwdemoInfo&quot;, &amp;adrwdemoInfo);</div></pre></td></tr></table></figure>
+</li>
+</ul>
+<p><strong>根据各个对话框条目的语法，在 adrwdemo.r 编写如下代码：</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div></pre></td><td class="code"><pre><div class="line">#include &lt;rscdefs.h&gt;</div><div class="line">#include &lt;cmdlist.h&gt;</div><div class="line">//对话框相关类在系统头文件dlogbox.h中定义</div><div class="line">#include &lt;dlogbox.h&gt;</div><div class="line"></div><div class="line">#include &quot;adrwdemo.h&quot;</div><div class="line">#include &quot;adrwdcmd.h&quot;</div><div class="line">#include &quot;adrwdtxt.h&quot;</div><div class="line"></div><div class="line">/*</div><div class="line">MDL应用程序（MA）和DLL之间的链接，仍然有一个MA文件被创建和加载，其中包含对话框资源以及DllMdlApp类型的资源，它告诉MA加载DLL。因此需要在一个.r文件中创建这个文件，该文件将被放入应用程序文件中。通常，这是在命令表资源文件的底部完成的，但是它可以在应用程序中的任何资源文件中。</div><div class="line">*/</div><div class="line">#define  DLLAPP_PRIMARY     1</div><div class="line">DllMdlApp   DLLAPP_PRIMARY =</div><div class="line">&#123;</div><div class="line">	&quot;ADRWDEMO&quot;, &quot;adrwdemo&quot;    // taskid, dllName</div><div class="line">&#125;</div><div class="line"></div><div class="line">/*</div><div class="line">构建对话框</div><div class="line">TITLE_Palette 是定义在 adrwdtxt.h 中的字符串&quot;AccuDraw Demo&quot;</div><div class="line">*/</div><div class="line">DialogBoxRsc DIALOGID_Pal = </div><div class="line">&#123;</div><div class="line">DIALOGATTR_DEFAULT | DIALOGATTR_NORIGHTICONS,</div><div class="line">XC, YC, NOHELP, MHELP, NOHOOK, NOPARENTID, TITLE_Palette,</div><div class="line">&#123;</div><div class="line">    &#123;</div><div class="line">        &#123;0,0,0,0&#125;, IconCmdFrame, ICONCMDFRAMEID_Frame, ON, 0, &quot;&quot;, &quot;&quot;&#125;,</div><div class="line">    &#125;</div><div class="line">&#125;;</div><div class="line"></div><div class="line">/*</div><div class="line">图标命令框</div><div class="line">*/</div><div class="line">DItem_IconCmdFrameRsc ICONCMDFRAMEID_Frame =</div><div class="line">&#123;</div><div class="line">    5,1,NOHELP,MHELP,TITLE_Palette,</div><div class="line">    &#123;</div><div class="line">        &#123;IconCmd, ICONCMDID_Line&#125;,</div><div class="line">        &#123;IconCmd, ICONCMDID_Circle&#125;,</div><div class="line">        &#123;IconCmd, ICONCMDID_Rectangle&#125;,</div><div class="line">        &#123;IconCmd, ICONCMDID_Rectangle2&#125;,</div><div class="line">        &#123;IconCmd, ICONCMDID_ChangeCircle&#125;,</div><div class="line">    &#125;</div><div class="line">&#125;;</div><div class="line"></div><div class="line">/*</div><div class="line">图标命令框条目</div><div class="line">其中 MSVERSION 随着每个版本的变化而变化，因此MDL程序员可以有条件地为特定的版本编译代码.</div><div class="line">extendedAttributes：扩展属性类型文本，用于鼠标移到图标命令条目上时显示命令描述提示</div><div class="line">*/</div><div class="line">DItem_IconCmdRsc ICONCMDID_Line =</div><div class="line">&#123;</div><div class="line">    NOHELP, MHELP, ICONCMDATTR_DONTSINGLESHOT,</div><div class="line">    CMD_DEMO_LINE, OTASKID, &quot;&quot;, &quot;&quot;,&#123;&#125;</div><div class="line">#if defined (MSVERSION) &amp;&amp; (MSVERSION &gt;= 0x550)</div><div class="line">&#125;</div><div class="line">extendedAttributes</div><div class="line">&#123;</div><div class="line">    &#123;</div><div class="line">        &#123;EXTATTR_FLYTEXT, TXT_Flyover_DemoLine&#125;, </div><div class="line">        &#123;EXTATTR_BALLOON, TXT_Balloon_DemoLine&#125;, </div><div class="line">    &#125;</div><div class="line">#endif</div><div class="line">&#125;;</div><div class="line">#if defined (MSVERSION) &amp;&amp; (MSVERSION &gt;= 0x551)</div><div class="line">CmdItemListRsc CMD_DEMO_LINE =</div><div class="line">&#123;&#123;</div><div class="line">    &#123;</div><div class="line">        &#123;0,GENY(1),0,0&#125;, ToggleButton, TOGGLEID_ShowAxes, ON, 0, &quot;&quot;, &quot;&quot;</div><div class="line">    &#125;,</div><div class="line">&#125;&#125;;</div><div class="line">#endif</div><div class="line"></div><div class="line">/*</div><div class="line">开关状态按钮</div><div class="line">*/</div><div class="line">DItem_ToggleButtonRsc TOGGLEID_ShowAxes =</div><div class="line">&#123;</div><div class="line">    NOCMD, MCMD, NOSYNONYM, NOHELP, MCMD, NOHOOK, NOARG,</div><div class="line">    NOMASK, NOINVERT, TOGGLE_ShowAxes, &quot;adrwdemoInfo.showAxes&quot;</div><div class="line">&#125;;</div></pre></td></tr></table></figure>
+<h4 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h4><p>adrwdemo.cpp 文件的画线功能由以下三部分组成：</p>
+<ol>
+<li><p>引入头文件，涉及用到的宏定义、全局变量以及函数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div></pre></td><td class="code"><pre><div class="line">#include &lt;MicroStationAPI.h&gt;</div><div class="line">#include &lt;cmdlist.h&gt;</div><div class="line">#include &lt;dlogman.fdf&gt;</div><div class="line">#include &lt;AccuDraw.h&gt;</div><div class="line">#include &lt;mselmdsc.fdf&gt;</div><div class="line"></div><div class="line">#include &quot;adrwdemo.h&quot;</div><div class="line">#include &quot;adrwdemocmd.h&quot;</div><div class="line">#include &quot;adrwdtxt.h</div></pre></td></tr></table></figure>
+</li>
+<li><p>程序入口函数【 extern “C” DLLEXPORT int MdlMain (int argc, char *argv[]) { }】，编写参照【MDL初始化逻辑】</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div></pre></td><td class="code"><pre><div class="line">extern &quot;C&quot; DLLEXPORT int MdlMain (int argc, char *argv[])</div><div class="line">&#123;</div><div class="line">	RscFileHandle   rfHandle;</div><div class="line">	SymbolSet	    *setP;</div><div class="line">	</div><div class="line">	//打开资源文件，载入内存</div><div class="line">	mdlResource_openFile (&amp;rfHandle, NULL, FALSE);</div><div class="line">	</div><div class="line">	//加载命令表</div><div class="line">	mdlParse_loadCommandTable (NULL);</div><div class="line">	</div><div class="line">	//创建命令表，注册命令表中的 command，并将命令ID与命令触发的方法对应</div><div class="line">	Private MdlCommandNumber  commandNumbers [] =</div><div class="line">	&#123;</div><div class="line">		&#123;line,			   CMD_DEMO_LINE&#125;,</div><div class="line">		&#123;circle,		   CMD_DEMO_CIRCLE&#125;,</div><div class="line">		&#123;rect,			   CMD_DEMO_RECTANGLE&#125;,</div><div class="line">		&#123;changeCircle,     CMD_DEMO_CHANGE&#125;,</div><div class="line">		&#123;rect2,			   CMD_DEMO_RECTANGLE2&#125;,</div><div class="line">		0</div><div class="line">	&#125;;</div><div class="line">	mdlSystem_registerCommandNumbers (commandNumbers);</div><div class="line">	</div><div class="line">	//注册消息列表 id 以用于操作的提示或错误</div><div class="line">	mdlState_registerStringIds (MSGLIST_commands, MSGLIST_prompts);</div><div class="line">	</div><div class="line">	/*</div><div class="line">	使setP符号集初始化,并发布使用的符号，符号集是一个指向内存区域的指针。在这个内存区域内对话条目可以找到应用的变量、结构和指针，为了建立并公布要存取的结构 adrwdemoinfo</div><div class="line">	*/</div><div class="line">	setP = mdlCExpression_initializeSet (VISIBILITY_DIALOG_BOX, 0, 0);</div><div class="line">	mdlDialog_publishComplexVariable (setP, &quot;adrwdemoinfo&quot;,</div><div class="line">		&quot;adrwdemoInfo&quot;, &amp;adrwdemoInfo);</div><div class="line">	adrwdemoInfo.showAxes    = FALSE;</div><div class="line">	</div><div class="line">	打开应用程序的初始对话框</div><div class="line">	mdlDialog_open (NULL, DIALOGID_Pal);</div><div class="line"></div><div class="line">	return 0;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p>当程序运行完这个函数，视图中就会显示 adrwdemo 工具框。</p>
+</li>
+<li><p>画线功能函数，MS内部机制是事件驱动，由事件队列统一管理调度，所以当按下 adrwdemo 工具框中的画线图标命令，这个画线任务就会进入事件队列，由事件队列处理器调用画线功能函数，所以需要使用函数mdlState_startPrimitive编写一个原始命令，由原始命令例程来处理元素放置和操纵，参考【MDL初始逻辑】第9条</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div></pre></td><td class="code"><pre><div class="line">//画线初始命令</div><div class="line">Private void line (char *unparsed)</div><div class="line">&#123;</div><div class="line">    /*</div><div class="line">    调用mdlState_startPrimitive基本命令生成元素，并调用line_dataPt1开始画线，并配置宏定义字符串MSG_cmdLine 和 MSG_promptEnterPoint 组成&quot;Line-&gt;enter point&quot;的命令提示 </div><div class="line">    */</div><div class="line">    mdlState_startPrimitive (line_dataPt1, line, MSG_cmdLine, MSG_promptEnterPoint);</div><div class="line">&#125;</div><div class="line"></div><div class="line">//画线输入第一个数据点，作为画线的起始点</div><div class="line">Private void line_dataPt1 (Dpoint3d *ptP, int view)</div><div class="line">&#123;</div><div class="line">    //存储确定的第一个数据点</div><div class="line">	ptStack[0] = *ptP;</div><div class="line">	//设置事件触发函数，当输入数据点时触发函数line_dataPt2，动态绘制时触发函数line_drawLine</div><div class="line">	mdlState_setFunction (STATE_DATAPOINT, line_dataPt2);</div><div class="line">	mdlState_setFunction (STATE_COMPLEX_DYNAMICS, line_drawLine);</div><div class="line">	//设置输出的命令提示</div><div class="line">	mdlOutput_rscPrintf (MSG_PROMPT, NULL, MSGLIST_prompts,</div><div class="line">		MSG_promptEnterPoint);</div><div class="line">&#125;</div><div class="line"></div><div class="line">//画线输入第二个数据点，作为画线的终结点</div><div class="line">Private void line_dataPt2 (Dpoint3d *ptP, int	view)</div><div class="line">&#123;</div><div class="line">	double length; 	/* length of line placed	       */</div><div class="line">	DVec3d xAxisVec;	/* unit vector -- direction of line    */</div><div class="line">	</div><div class="line">	//传入第二个数据点，根据两点绘制直线</div><div class="line">	line_drawLine (ptP, view, NORMALDRAW);</div><div class="line"></div><div class="line">	//求出两点法向量的距离</div><div class="line">	length = mdlVec_computeNormal (&amp;xAxisVec, ptP, &amp;ptStack[0]);</div><div class="line">	</div><div class="line">	//设置精确绘图 AccuDraw 的位置、距离、方向等，以便更好地操作，提高工具的可用性和能力</div><div class="line">	mdlState_setAccudrawContext  (</div><div class="line">		ACCUDRAW_SetDistance |</div><div class="line">		ACCUDRAW_SetXAxis,</div><div class="line">		NULL,		      /* origin: last point OK	*/</div><div class="line">		NULL,		      /* delta (not used here)	*/</div><div class="line">		&amp;length,		      /* distance		*/</div><div class="line">		NULL,		      /* angle (not used here)	*/</div><div class="line">		&amp;xAxisVec 	      /* x axis: last line	*/</div><div class="line">		);</div><div class="line">		</div><div class="line">	//将第二个数据点设置为第一个</div><div class="line">	ptStack[0] = *ptP;</div><div class="line">	</div><div class="line">	mdlState_setFunction (STATE_COMPLEX_DYNAMICS, line_drawLine);</div><div class="line">	mdlOutput_rscPrintf (MSG_PROMPT, NULL, MSGLIST_prompts,</div><div class="line">		MSG_promptEnterPoint);</div><div class="line">&#125;</div><div class="line"></div><div class="line">//结合line_dataPt1和line_dataPt2两个数据点画线</div><div class="line">Private void line_drawLine (Dpoint3d *ptP, int view, MstnDrawMode drawMode)</div><div class="line">&#123;</div><div class="line">	MSElement elem;</div><div class="line">	Dpoint3d points[2];</div><div class="line"></div><div class="line">	points[0] = ptStack[0];</div><div class="line">	points[1] = *ptP;</div><div class="line">	</div><div class="line">	//根据传入的两个点，创建元素</div><div class="line">	mdlLine_create (&amp;elem, NULL, points);</div><div class="line">	//显示创建的直线元素</div><div class="line">	mdlElement_display (&amp;elem, drawMode);</div><div class="line">	</div><div class="line">	//当完成绘制，就将元素头部中的属性位设置为未锁定、新元素，而不修改，也就是在确定第二个点之后在视图生成固定位置的直线，而不动态改变了</div><div class="line">	if (drawMode == NORMALDRAW)</div><div class="line">		mdlElement_add (&amp;elem);</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<h4 id="编译规则"><a href="#编译规则" class="headerlink" title="编译规则"></a>编译规则</h4><p> MDL 的编译文件是 makefile 类型的文件，拥有自己的语法和变量，在 Linux 中也用来进行宏编译，它的好处：</p>
+<ul>
+<li>简化编译时所需要执行的命令</li>
+<li>若在编译完成之后，修改了某个源码文件，则 make 仅会针对被修改了的文件进行编译。其他的目标文件不会被更改</li>
+<li>最后可以依照相依性来更新执行文件</li>
+</ul>
+<p>adrwdemo.mke 编写如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div></pre></td><td class="code"><pre><div class="line">//定义mdl程序名</div><div class="line">appName	   = adrwdemo</div><div class="line"></div><div class="line">/*</div><div class="line">定义mdl目标文件路径，其中</div><div class="line">$(o):mdl内置变量，objects 文件的路径，如：C:\Program Files (x86)\Bentley\MicroStation V8i (SELECTseries)\MicroStation\mdl\objects</div><div class="line">$(oext):objects 文件后缀.obj</div><div class="line">*/</div><div class="line">appObjects = $(o)$(appName)$(oext)</div><div class="line"></div><div class="line">//定义资源文件路径</div><div class="line">appRscs    = $(o)$(appName).rsc $(o)$(appName)cmd.rsc $(o)$(appName)typ.rsc $(o)$(appName)msg.rsc</div><div class="line"></div><div class="line">//定义当前makefile文件的路径</div><div class="line">baseDir    = $(_MakeFilePath)</div><div class="line"></div><div class="line">//引入 mdl 内置的编译规则</div><div class="line">%include mdl.mki</div><div class="line">dirToSearch = $(MSMDE)/mdl/MicroStationAPI</div><div class="line">%include cincapnd.mki</div><div class="line"></div><div class="line">//创建objects、rscObjects、reqdObjs三个文件夹，路径在C:\Program Files (x86)\Bentley\MicroStation V8i (SELECTseries)\MicroStation\mdl，用来放置编译后的文件</div><div class="line">always:</div><div class="line">    ~mkdir $(o)</div><div class="line">    ~mkdir $(rscObjects)</div><div class="line">    ~mkdir $(reqdObjs)</div><div class="line"></div><div class="line">/*</div><div class="line">设置dlmlink.mkil里面的变量，以便调用dlmlink，其中注意 DLM_LIBRARY_FILES 源码依赖的类库都要添加进来，DLM_OBJECT_FILES 需要编译的.cpp文件都要添加进来</div><div class="line">*/</div><div class="line">DLM_NO_SIGN       = 1</div><div class="line">DLM_OBJECT_DEST	  = $(o)</div><div class="line">DLM_NAME 	  = $(appName)</div><div class="line">DLM_OBJECT_FILES  = $(appObjects)</div><div class="line">DLM_NO_DLS	  = 1</div><div class="line">DLM_NO_DEF	  = 1</div><div class="line">DLM_NOENTRY	  = 1</div><div class="line">DLM_DEST	  = $(mdlapps)</div><div class="line">DLM_NO_DELAYLOAD  = 1                </div><div class="line">DLM_NO_NTBSADDR   = 1</div><div class="line">DLM_LIBRARY_FILES = $(mdlLibs)BentleyDgn.lib \</div><div class="line">	                $(mdlLibs)toolsubs.lib \</div><div class="line">        	        $(mdlLibs)ditemlib.lib \</div><div class="line">                    $(mdlLibs)mdllib.lib \</div><div class="line">                    $(mdlLibs)msbspline.lib \</div><div class="line">                    $(mdlLibs)mtg.lib</div><div class="line"></div><div class="line"></div><div class="line">/*</div><div class="line">编译资源文件，编译语法：</div><div class="line">&#123;</div><div class="line">目标（target）：目标文件1 目标文件2</div><div class="line">&lt;tab&gt;编译规则</div><div class="line">&#125;</div><div class="line">第一行中的目标就是要建立的信息，而目标文件就是具有相关性的源文件，第二行开头需要&lt;tab&gt;缩进一下再写编译规则，如果为空行则表示默认使用mdl.mki内置的编译规则</div><div class="line">*/</div><div class="line"></div><div class="line">$(baseDir)$(appName)cmd.h   : $(baseDir)$(appName)cmd.r</div><div class="line"></div><div class="line">$(o)$(appName)cmd.rsc	    : $(baseDir)$(appName)cmd.r</div><div class="line"></div><div class="line">$(o)$(appName)typ.r         : $(baseDir)$(appName)typ.mt</div><div class="line"></div><div class="line">$(o)$(appName)typ.rsc	    : $(o)$(appName)typ.r</div><div class="line"></div><div class="line">$(o)$(appName)msg.rsc       : $(baseDir)$(appName)msg.r</div><div class="line"></div><div class="line">$(o)$(appName).rsc          : $(baseDir)$(appName).r</div><div class="line"></div><div class="line">//根据上一步编译好的.rsc文件生成可执行文件.ma</div><div class="line">$(mdlapps)$(appName).ma     : $(appRscs)</div><div class="line">        $(msg)</div><div class="line">        &gt; $(o)make.opt</div><div class="line">        -o$@</div><div class="line">        $(appRscs)</div><div class="line">        &lt;</div><div class="line">        $(RLibCmd) @$(o)make.opt</div><div class="line">        ~time</div><div class="line"></div><div class="line">//调动VS提供的编译器cl，将源文件.cpp编译成目标文件.obj，由 dmlink.mki 定义的编译规则链接到DLL</div><div class="line">$(o)$(appName)$(oext)            : $(baseDir)$(appName).cpp</div><div class="line"></div><div class="line">%include dlmlink.mki</div></pre></td></tr></table></figure>
+<p>编写完成，运行程序，实现下图红框中的画线功能：</p>
+<p><img src="http://7xw5qd.com1.z0.glb.clouddn.com/mdl2_pargramrun.png" alt="mdl2_pargramrun"></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/06/16/2018-06-16-MDL之初试/" rel="next" title="初试 MDL">
+                <i class="fa fa-chevron-left"></i> 初试 MDL
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Mei Xia</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+
+          </nav>
+
+          
+
+          <div class="links-of-author motion-element">
+            
+              
+                <span class="links-of-author-item">
+                  <a href="https://github.com/muhuashanjin" target="_blank" title="GitHub">
+                    
+                      <i class="fa fa-fw fa-github"></i>GitHub</a>
+                </span>
+              
+            
+          </div>
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#设计思路"><span class="nav-number">1.</span> <span class="nav-text">设计思路</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#MDL-如何开始，并能使初设很容易转换成高层次的设计："><span class="nav-number">1.0.1.</span> <span class="nav-text">MDL 如何开始，并能使初设很容易转换成高层次的设计：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#以下就是实际编程中-MDL-初始化逻辑："><span class="nav-number">1.0.2.</span> <span class="nav-text">以下就是实际编程中 MDL 初始化逻辑：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#编程实践"><span class="nav-number">2.</span> <span class="nav-text">编程实践</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#消息表"><span class="nav-number">2.0.1.</span> <span class="nav-text">消息表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#命令表"><span class="nav-number">2.0.2.</span> <span class="nav-text">命令表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#对话框"><span class="nav-number">2.0.3.</span> <span class="nav-text">对话框</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#源码"><span class="nav-number">2.0.4.</span> <span class="nav-text">源码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#编译规则"><span class="nav-number">2.0.5.</span> <span class="nav-text">编译规则</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Mei Xia</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.3</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.3"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.3"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.3"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.3"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
